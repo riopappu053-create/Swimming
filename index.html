@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaPulse · Swimming Academy & Aquatic Center</title>
+    <link rel="icon" type="image/jpeg" href="#">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+                        display: ['"Oswald"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;600&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === RESET & CORE === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            padding-top: 76px;
+        }
+        .hero {
+            margin-top: -76px;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-logo {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* === THEME VARIABLES - Dark Blue & Black === */
+        :root {
+            --bg-color: #0a0e1a;
+            --bg-secondary: #0f1422;
+            --bg-card: #141b2b;
+            --bg-inverted: #F5F5F5;
+            --text-main: #ffffff;
+            --text-muted: #8aabdd;
+            --accent-color: #4a7bc7;
+            --accent-dark: #1a3a6b;
+            --border-color: #1a3a6b;
+            --border-light: rgba(26, 58, 107, 0.3);
+            --nav-bg: rgba(10, 14, 26, 0.95);
+            --drawer-bg: rgba(10, 14, 26, 0.98);
+            --menu-hover-bg: rgba(74, 123, 199, 0.12);
+        }
+
+        /* LIGHT MODE */
+        body.light-mode {
+            --bg-color: #F8F6F2;
+            --bg-secondary: #EFECE6;
+            --bg-card: #FFFFFF;
+            --bg-inverted: #0B0B0B;
+            --text-main: #1A1A1A;
+            --text-muted: #555555;
+            --accent-color: #1A6DF5;
+            --accent-dark: #0F4AB5;
+            --border-color: #D0CDC5;
+            --border-light: rgba(26, 109, 245, 0.2);
+            --nav-bg: rgba(248, 246, 242, 0.95);
+            --drawer-bg: rgba(248, 246, 242, 0.98);
+            --menu-hover-bg: rgba(26, 109, 245, 0.08);
+        }
+
+        /* RTL SUPPORT */
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+
+        @keyframes subtleZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+        .animate-zoom { animation: subtleZoom 25s infinite alternate ease-in-out; }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--nav-bg);
+            padding: 0 32px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            border-bottom: 1px solid transparent;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .navbar.scrolled { 
+            height: 68px;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        body.light-mode .navbar.scrolled { 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .nav-link { 
+            position: relative; 
+            padding: 8px 16px; 
+            margin: 0 2px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 12px; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 1.2px; 
+            transition: all 0.25s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 5px; 
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 2px; 
+            left: 50%; 
+            width: 0; 
+            height: 2px;
+            background: var(--accent-color); 
+            transition: all 0.3s ease; 
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 50%; }
+        .nav-link:hover, .nav-link.active { 
+            color: var(--accent-color); 
+            background: var(--menu-hover-bg);
+        }
+        
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { 
+            position: absolute; 
+            top: 58px; 
+            left: 0; 
+            transform: translateY(8px); 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 100; 
+        }
+        .navbar.scrolled .dropdown-menu { top: 52px; }
+        .dropdown-inner { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-light); 
+            min-width: 200px; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); 
+            padding: 6px 0; 
+            display: flex; 
+            flex-direction: column; 
+            border-radius: 8px;
+        }
+        body.light-mode .dropdown-inner { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .dropdown-item { 
+            display: block; 
+            padding: 10px 22px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 11px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            transition: all 0.2s; 
+            text-align: left; 
+            white-space: nowrap; 
+        }
+        .dropdown-item:hover { 
+            background: var(--menu-hover-bg); 
+            color: var(--accent-color); 
+            padding-left: 28px; 
+        }
+        [dir="rtl"] .dropdown-item:hover { padding-left: 22px; padding-right: 28px; }
+
+        .theme-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .theme-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #fff;
+            transform: rotate(20deg);
+        }
+
+        .rtl-btn-style {
+            width: 42px; 
+            height: 28px; 
+            background: var(--bg-secondary); 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            color: var(--text-main); 
+            transition: all 0.3s ease; 
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        .rtl-btn-style:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+        .rtl-toggle-modern {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            padding: 5px 12px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .rtl-toggle-modern:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+
+        .btn { 
+            padding: 10px 24px; 
+            font-weight: 600; 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            transition: all 0.3s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            border: 1px solid transparent; 
+            font-family: 'Inter', sans-serif;
+            border-radius: 6px;
+        }
+        .btn-solid { background: var(--accent-color); color: #FFFFFF !important; }
+        .btn-solid:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74, 123, 199, 0.3); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-light); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color) !important; background: var(--menu-hover-bg); }
+
+        .drawer-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.7); 
+            z-index: 999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.35s ease; 
+            backdrop-filter: blur(4px); 
+        }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+
+        .fullscreen-menu { 
+            position: fixed; 
+            top: 0; 
+            right: 0; 
+            width: 100%; 
+            max-width: 380px; 
+            height: 100dvh; 
+            background: var(--drawer-bg); 
+            z-index: 1001; 
+            display: flex; 
+            flex-direction: column; 
+            opacity: 0; 
+            visibility: hidden; 
+            transform: translateX(100%); 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            border-left: 1px solid var(--border-light);
+        }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid var(--border-light); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        
+        /* Mobile link base */
+        .mobile-link { 
+            display: block; 
+            width: 100%; 
+            padding: 16px 28px; 
+            font-size: 1rem; 
+            font-family: 'Oswald'; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            transition: all 0.25s; 
+            border-bottom: 1px solid var(--border-light); 
+        }
+        .mobile-link:hover { 
+            color: var(--accent-color); 
+            padding-left: 36px; 
+            background: var(--menu-hover-bg); 
+        }
+        [dir="rtl"] .mobile-link:hover { padding-left: 28px; padding-right: 36px; }
+        
+        /* Mobile dropdown wrapper */
+        .mobile-dropdown {
+            border-bottom: 1px solid var(--border-light);
+        }
+        .mobile-dropdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 28px;
+            font-family: 'Oswald';
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 1rem;
+        }
+        .mobile-dropdown-header:hover {
+            color: var(--accent-color);
+            background: var(--menu-hover-bg);
+        }
+        .mobile-dropdown-header i {
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+        .mobile-dropdown-header.open i {
+            transform: rotate(180deg);
+        }
+        .mobile-dropdown-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.3s ease;
+            padding-left: 16px;
+            background: var(--bg-secondary);
+        }
+        .mobile-dropdown-items.open {
+            max-height: 200px;
+            padding: 8px 0;
+        }
+        .mobile-dropdown-items .mobile-link {
+            border-bottom: none;
+            padding: 10px 28px;
+            font-size: 0.95rem;
+            font-family: 'Oswald';
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+        .mobile-dropdown-items .mobile-link:hover {
+            color: var(--accent-color);
+            padding-left: 36px;
+            background: var(--menu-hover-bg);
+        }
+
+        /* Footer Styles */
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-light); padding-top: 70px; }
+        footer h4 { color: var(--text-main); font-family: 'Oswald', sans-serif; font-size: 1.1rem; margin-bottom: 20px; letter-spacing: 1.5px; } 
+        footer a, footer li, footer span { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.9rem; }
+        footer a:hover { color: var(--accent-color); }
+        .social-link-circle { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            border: 1px solid var(--border-light); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.3s; 
+            color: var(--text-main); 
+            background: transparent; 
+        }
+        .social-link-circle:hover { background: var(--accent-color); border-color: var(--accent-color); color: #FFFFFF; transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid var(--border-light); padding: 28px 0; margin-top: 50px; }
+
+        /* Icon size matching home2.html - w-10 h-10 with border */
+        .brand-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(74, 123, 199, 0.3);
+            background: rgba(74, 123, 199, 0.15);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .brand-icon-wrapper i {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+        .brand-icon-wrapper:hover {
+            background: rgba(74, 123, 199, 0.25);
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        /* Mobile Menu Button - Only hamburger, no icon */
+        .mobile-menu-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+        .mobile-menu-btn:hover {
+            color: var(--accent-color);
+            background: var(--menu-hover-bg);
+        }
+
+        /* Menu Header Brand with Icon */
+        .menu-brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .menu-brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(74, 123, 199, 0.3);
+            background: rgba(74, 123, 199, 0.15);
+            flex-shrink: 0;
+        }
+        .menu-brand-icon i {
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        /* Line clamp for consistent text height */
+        .line-clamp-4 {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Floating Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes float-delayed {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float-delayed 3s ease-in-out 1.5s infinite;
+        }
+
+        /* Gallery Stats */
+        .gallery-stats {
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* Card Hover Effects */
+        .program-card {
+            transition: all 0.5s ease;
+        }
+        .program-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(74, 123, 199, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- STICKY NAVBAR -->
+    <!-- ============================================ -->
+    <nav class="navbar" id="main-nav">
+        <div class="w-full flex items-center justify-between max-w-[1440px] mx-auto">
+            <div class="flex items-center">
+                <a href="index.html" class="brand-link">
+                    <div class="brand-icon-wrapper">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <div class="text-2xl brand-logo tracking-widest uppercase block" style="color: var(--text-main) !important;">
+                        <span style="color: var(--accent-color);">Aqua</span>Pulse
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden xl:flex justify-center items-center flex-1">
+                <div class="dropdown">
+                    <div class="nav-link active">Home <i class="fas fa-chevron-down text-[8px] ml-1 opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item" style="color: var(--accent-color);">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="programs.html" class="nav-link">Programs</a>
+                <a href="schedule.html" class="nav-link">Schedule</a>
+                <a href="coaches.html" class="nav-link">Coaches</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+
+            <div class="hidden xl:flex items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <a href="login.html" class="btn btn-outline !py-1.5 !px-5 !text-[10px]">Login</a>
+                    <a href="signup.html" class="btn btn-solid !py-1.5 !px-5 !text-[10px]">Sign Up</a>
+                </div>
+                <div class="w-px h-5 bg-[var(--border-light)] mx-1"></div>
+                <button id="theme-toggle-desktop" class="theme-btn" role="button" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="theme-icon-desktop"></i>
+                </button>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+            </div>
+
+            <!-- Mobile Menu Button - Only hamburger icon -->
+            <div class="xl:hidden flex items-center justify-end gap-3">
+                <button id="mobile-btn" class="mobile-menu-btn" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <!-- Menu Header with Logo Icon -->
+        <div class="w-full px-6 py-6 flex justify-between items-center shrink-0 border-b border-[var(--border-light)]">
+            <a href="index.html" class="menu-brand-link">
+                <div class="menu-brand-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <div class="text-2xl brand-logo tracking-widest uppercase block" style="color: var(--text-main) !important;">
+                        <span style="color: var(--accent-color);">Aqua</span>Pulse
+                    </div>
+            </a>
+            <button id="close-menu" class="w-10 h-10 flex items-center justify-center transition-all text-2xl text-[var(--text-main)] hover:text-[var(--accent-color)]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-3">
+            <!-- Mobile Dropdown for Home -->
+            <div class="mobile-dropdown">
+                <div class="mobile-dropdown-header" id="mobile-home-toggle">
+                    <span>Home</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="mobile-dropdown-items" id="mobile-home-items">
+                    <a href="index.html" class="mobile-link" style="color: var(--accent-color);">Home Page 1</a>
+                    <a href="home-2.html" class="mobile-link">Home Page 2</a>
+                </div>
+            </div>
+            <!-- Regular mobile links -->
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="programs.html" class="mobile-link">Programs</a>
+            <a href="schedule.html" class="mobile-link">Schedule</a>
+            <a href="coaches.html" class="mobile-link">Coaches</a>
+            <a href="gallery.html" class="mobile-link">Gallery</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+           
+            
+            <div class="px-6 mt-6 mb-2">
+                
+            </div>
+           
+        </div>
+
+        <div class="w-full px-6 py-6 border-t border-[var(--border-light)] flex flex-col gap-5 shrink-0 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Theme</span>
+                    <button id="theme-toggle-mobile" class="theme-btn" role="button" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="theme-icon-mobile"></i>
+                    </button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-toggle-modern" title="Toggle RTL/LTR">
+                        <span class="rtl-text">LTR</span>
+                        <i class="fas fa-arrow-right-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex gap-3 w-full">
+                <a href="login.html" class="btn btn-outline flex-1 !py-2.5">Login</a>
+                <a href="signup.html" class="btn btn-solid flex-1 !py-2.5"> signup</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HERO SECTION -->
+    <!-- ============================================ -->
+    <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-b border-[var(--border-light)]">
+        <div class="absolute inset-0 z-0">
+            <img src="pictures/hero_home1.jpg" alt="Aquatic Center" class="w-full h-full object-cover scale-110 animate-zoom">
+            <div class="absolute inset-0 bg-[#0a0e1a]/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#0a0e1a]/80 via-[#0a0e1a]/40 to-[#0a0e1a]/80"></div>
+            <div class="absolute inset-0 opacity-20" style="background: radial-gradient(ellipse at 30% 50%, #4a7bc7 0%, transparent 70%);"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+            <span class="inline-block text-[var(--accent-color)] text-sm font-bold uppercase tracking-[0.35em] mb-6">
+                <i class="fas fa-swimmer mr-2"></i>
+                Swim Academy
+            </span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-white mb-8 drop-shadow-lg">
+                Dive Into <br>
+                <span class="text-[var(--accent-color)] drop-shadow-md">Excellence</span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-white/90 leading-8 mb-12 drop-shadow-lg">
+                Skill‑based swimming programs for every age and level. Olympic‑grade coaching, 
+                flexible batch timings, and a safe, fun aquatic environment designed for champions.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-5">
+                <a href="#programs" class="px-10 py-4 bg-[var(--accent-color)] text-white rounded-full font-semibold text-lg hover:scale-105 transition duration-300 shadow-lg shadow-[var(--accent-color)]/30">
+                    View Programs
+                </a>
+                <a href="#enroll" class="px-10 py-4 border-2 border-white text-white rounded-full font-semibold text-lg hover:bg-white hover:text-[#0a0e1a] transition duration-300 shadow-lg">
+                    Enroll Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- ABOUT SECTION - Dark Blue Theme -->
+    <!-- ============================================ -->
+    <section class="w-full py-24 bg-[var(--bg-secondary)] border-b border-[var(--border-light)]">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="text-center mb-16">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.3em] inline-block bg-[var(--bg-card)] px-6 py-2 rounded-full border border-[var(--border-light)]">
+                    <i class="fas fa-droplet mr-2"></i> About Us
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="relative group">
+                    <div class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-[var(--border-light)]">
+                        <img src="pictures/pic2.jpg" alt="Professional swimmer training" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/80 via-[#0a0e1a]/20 to-transparent"></div>
+                        
+                       
+                    </div>
+                    
+                  
+                </div>
+
+                <div class="flex flex-col items-start justify-center">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-0.5 bg-[var(--accent-color)]"></div>
+                        <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.2em]">Our Philosophy</span>
+                    </div>
+
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4 leading-tight">
+                        Built for 
+                        <span class="text-[var(--accent-color)] relative">
+                            Champions
+                            <svg class="absolute -bottom-2 left-0 w-full h-2" viewBox="0 0 100 8" fill="none">
+                                <path d="M0 4C20 8 40 0 60 4C80 8 100 0 100 0" stroke="var(--accent-color)" stroke-width="2" opacity="0.4"/>
+                            </svg>
+                        </span>
+                    </h2>
+
+                    <div class="w-16 h-1 bg-[var(--accent-color)] mb-8 rounded-full"></div>
+
+                    <p class="text-[var(--text-muted)] text-lg leading-relaxed mb-6">
+                        AquaPulse isn't just a swimming academy — it's a <span class="text-[var(--text-main)] font-semibold">launchpad for aquatic excellence</span>. We combine modern sports science with proven coaching methodologies to develop swimmers who are fast, efficient, and confident in the water.
+                    </p>
+
+                    <div class="space-y-4 mb-10 w-full">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 flex items-center justify-center flex-shrink-0 mt-0.5 border border-[var(--border-light)]">
+                                <i class="fas fa-medal text-[var(--accent-color)] text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[var(--text-main)] font-bold text-sm uppercase tracking-wider">Olympic-Grade Coaching</h4>
+                                <p class="text-[var(--text-muted)] text-sm">Learn from certified coaches with international experience.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/10 flex items-center justify-center flex-shrink-0 mt-0.5 border border-[var(--border-light)]">
+                                <i class="fas fa-rocket text-[var(--accent-color)] text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[var(--text-main)] font-bold text-sm uppercase tracking-wider">Proven Methodology</h4>
+                                <p class="text-[var(--text-muted)] text-sm">Science-backed training programs for measurable progress.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 w-full">
+                        <a href="about.html" class="btn btn-solid">
+                            Our Story <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                        </a>
+                        <a href="coaches.html" class="btn btn-outline">
+                            Meet Coaches <i class="fas fa-users ml-2 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PROGRAMS SECTION - Dark Blue Theme -->
+    <!-- ============================================ -->
+    <section id="programs" class="w-full py-24 bg-[var(--bg-color)] border-b border-[var(--border-light)] relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--accent-color)]/5 to-transparent pointer-events-none"></div>
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-[var(--accent-color)]/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.3em] mb-4 inline-block relative">
+                    <span class="absolute -left-8 top-1/2 w-6 h-px bg-[var(--accent-color)]/50 -translate-y-1/2 hidden sm:block"></span>
+                    Training Pillars
+                    <span class="absolute -right-8 top-1/2 w-6 h-px bg-[var(--accent-color)]/50 -translate-y-1/2 hidden sm:block"></span>
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-6">
+                    Our <span class="text-[var(--accent-color)]">Programs</span>
+                </h2>
+                <div class="w-16 h-1 bg-[var(--accent-color)] mx-auto mb-6"></div>
+                <p class="text-[var(--text-muted)] text-lg">Evidence-based swimming programs across all skill levels and age groups.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-fr">
+                <!-- Card 1 -->
+                <div class="group bg-[var(--bg-card)] border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 rounded-2xl overflow-hidden flex flex-col shadow-lg hover:shadow-xl hover:shadow-[var(--accent-color)]/5 hover:-translate-y-1.5">
+                    <div class="h-64 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/ind1.webp" alt="Little Fins" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/70 via-[#0a0e1a]/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-[var(--accent-color)] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                            Ages 3–6
+                        </div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-1">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] mb-3 group-hover:text-[var(--accent-color)] transition-colors">Little Fins</h3>
+                        <p class="text-[var(--text-muted)] leading-relaxed text-sm flex-1">Water adaptation, safety skills, and basic stroke development in a fun, playful environment.</p>
+                        <div class="mt-6 pt-4 border-t border-[var(--border-light)]/50 flex items-center justify-between">
+                            <a href="programs.html" class="text-[var(--accent-color)] text-xs uppercase tracking-widest font-semibold hover:text-[var(--accent-dark)] flex items-center gap-2 group/link">
+                                <span>Learn More</span>
+                                <i class="fas fa-arrow-right text-[10px] transition-transform duration-300 group-hover/link:translate-x-1"></i>
+                            </a>
+                            <span class="text-[var(--text-muted)]/20 text-xs font-mono">01</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="group bg-[var(--bg-card)] border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 rounded-2xl overflow-hidden flex flex-col shadow-lg hover:shadow-xl hover:shadow-[var(--accent-color)]/5 hover:-translate-y-1.5">
+                    <div class="h-64 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/ind2.webp" alt="Stroke Foundation" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/70 via-[#0a0e1a]/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-[var(--accent-color)] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                            Ages 7–12
+                        </div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-1">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] mb-3 group-hover:text-[var(--accent-color)] transition-colors">Stroke Foundation</h3>
+                        <p class="text-[var(--text-muted)] leading-relaxed text-sm flex-1">Freestyle, backstroke, and foundational technique with emphasis on efficiency and breathing.</p>
+                        <div class="mt-6 pt-4 border-t border-[var(--border-light)]/50 flex items-center justify-between">
+                            <a href="programs.html" class="text-[var(--accent-color)] text-xs uppercase tracking-widest font-semibold hover:text-[var(--accent-dark)] flex items-center gap-2 group/link">
+                                <span>Learn More</span>
+                                <i class="fas fa-arrow-right text-[10px] transition-transform duration-300 group-hover/link:translate-x-1"></i>
+                            </a>
+                            <span class="text-[var(--text-muted)]/20 text-xs font-mono">02</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="group bg-[var(--bg-card)] border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 rounded-2xl overflow-hidden flex flex-col shadow-lg hover:shadow-xl hover:shadow-[var(--accent-color)]/5 hover:-translate-y-1.5">
+                    <div class="h-64 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/ind3.webp" alt="Elite Squad" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/70 via-[#0a0e1a]/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 bg-[var(--accent-color)] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                            Ages 14+
+                        </div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-1">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] mb-3 group-hover:text-[var(--accent-color)] transition-colors">Elite Squad</h3>
+                        <p class="text-[var(--text-muted)] leading-relaxed text-sm flex-1">Advanced race preparation, high-intensity interval training, and competitive strategy.</p>
+                        <div class="mt-6 pt-4 border-t border-[var(--border-light)]/50 flex items-center justify-between">
+                            <a href="programs.html" class="text-[var(--accent-color)] text-xs uppercase tracking-widest font-semibold hover:text-[var(--accent-dark)] flex items-center gap-2 group/link">
+                                <span>Learn More</span>
+                                <i class="fas fa-arrow-right text-[10px] transition-transform duration-300 group-hover/link:translate-x-1"></i>
+                            </a>
+                            <span class="text-[var(--text-muted)]/20 text-xs font-mono">03</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- GALLERY SECTION - Dark Blue Theme -->
+    <!-- ============================================ -->
+    <section id="gallery" class="w-full py-24 bg-[var(--bg-secondary)] border-b border-[var(--border-light)] relative overflow-hidden">
+        <div class="absolute bottom-0 left-0 w-1/3 h-1/2 bg-[var(--accent-color)]/5 rounded-tr-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-0 right-0 w-64 h-64 bg-[var(--accent-color)]/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-14 gap-8">
+                <div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.2em] block">The Pool</span>
+                        <span class="w-12 h-px bg-[var(--accent-color)]"></span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)]">
+                        Aquatic <span class="text-[var(--accent-color)]">Excellence</span>
+                    </h2>
+                    <p class="text-[var(--text-muted)] mt-3 max-w-lg">Explore our world-class facilities and training environment.</p>
+                </div>
+                <a href="gallery.html" class="group inline-flex items-center gap-3 px-8 py-3 border-2 border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white transition-all duration-300 rounded-full text-sm font-semibold uppercase tracking-wider flex-shrink-0">
+                    <span>View Full Gallery</span>
+                    <i class="fas fa-arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[260px] lg:auto-rows-[280px]">
+                <!-- Main Feature -->
+                <div class="col-span-1 sm:col-span-2 row-span-2 relative group overflow-hidden rounded-2xl border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-[var(--accent-color)]/10">
+                    <img src="https://images.unsplash.com/photo-1560089000-7433a4ebbd64?auto=format&fit=crop&w=600&q=80" alt="Olympic Pool" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/80 via-[#0a0e1a]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-[#0a0e1a]/20 group-hover:bg-[#0a0e1a]/0 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <h4 class="text-white font-bold text-2xl mb-1">Olympic Pool</h4>
+                       
+                    </div>
+                    <div class="absolute top-4 right-4 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
+                        <i class="fas fa-expand text-xs"></i>
+                    </div>
+                </div>
+                
+               
+                
+               
+                
+                <div class="col-span-1 sm:col-span-2 row-span-1 relative group overflow-hidden rounded-2xl border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-[var(--accent-color)]/10">
+                    <img src="pictures/ind4.webp" alt="Coaching Session" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/80 via-[#0a0e1a]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-[#0a0e1a]/20 group-hover:bg-[#0a0e1a]/0 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <h4 class="text-white font-bold text-xl mb-1">Expert Coaching</h4>
+                        
+                    </div>
+                    <div class="absolute top-4 right-4 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
+                        <i class="fas fa-expand text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- NEW PHOTO 1: Action Shot - Swimmer in motion -->
+               
+                
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-2xl border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-[var(--accent-color)]/10">
+                    <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=600&q=80" alt="Swim Meet" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-[#0a0e1a]/20 group-hover:bg-[#0a0e1a]/0 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <span class="text-white text-sm font-semibold">Competition Ready</span>
+                    </div>
+                    <div class="absolute top-3 right-3 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
+                        <i class="fas fa-expand text-[10px]"></i>
+                    </div>
+                </div>
+                
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-2xl border border-[var(--border-light)] hover:border-[var(--accent-color)] transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-[var(--accent-color)]/10">
+                    <img src="pictures/ind6.jpg" alt="Underwater View" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-[#0a0e1a]/20 group-hover:bg-[#0a0e1a]/0 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <span class="text-white text-sm font-semibold">Underwater Excellence</span>
+                    </div>
+                    <div class="absolute top-3 right-3 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
+                        <i class="fas fa-expand text-[10px]"></i>
+                    </div>
+                </div>
+
+                <!-- NEW PHOTO 2: Group Training/Team Spirit -->
+                
+                    <div class="absolute top-4 right-4 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
+                        <i class="fas fa-expand text-xs"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-8 border-t border-[var(--border-light)]">
+                <div class="text-center group hover:scale-105 transition-transform">
+                    <span class="text-3xl font-bold text-[var(--accent-color)]">50m</span>
+                    <p class="text-[var(--text-muted)] text-sm mt-1">Olympic Pool</p>
+                </div>
+                <div class="text-center group hover:scale-105 transition-transform">
+                    <span class="text-3xl font-bold text-[var(--accent-color)]">10</span>
+                    <p class="text-[var(--text-muted)] text-sm mt-1">Training Lanes</p>
+                </div>
+                <div class="text-center group hover:scale-105 transition-transform">
+                    <span class="text-3xl font-bold text-[var(--accent-color)]">2K+</span>
+                    <p class="text-[var(--text-muted)] text-sm mt-1">Active Swimmers</p>
+                </div>
+                <div class="text-center group hover:scale-105 transition-transform">
+                    <span class="text-3xl font-bold text-[var(--accent-color)]">15</span>
+                    <p class="text-[var(--text-muted)] text-sm mt-1">Expert Coaches</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SCHEDULE & COACHES SECTION - Dark Blue Theme -->
+    <!-- ============================================ -->
+    <section id="schedule" class="w-full py-24 bg-[var(--bg-color)] border-b border-[var(--border-light)]">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="flex flex-col items-start justify-center order-2 lg:order-1">
+                    <div class="inline-flex items-center gap-3 bg-[var(--accent-color)]/10 px-5 py-2.5 rounded-full mb-6 border border-[var(--border-light)]">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-color)] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[var(--accent-color)]"></span>
+                        </span>
+                        <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.2em]">Batch Timings</span>
+                    </div>
+                    
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-6 leading-tight">Flexible <span class="text-[var(--accent-color)]">Schedules</span></h2>
+                    <div class="w-16 h-1 bg-[var(--accent-color)] mb-10"></div>
+                    
+                    <div class="w-full flex flex-col gap-4">
+                        <div class="flex justify-between p-4 rounded-2xl border border-[var(--border-light)] bg-[var(--bg-secondary)] hover:border-[var(--accent-color)] transition-colors">
+                            <span class="font-bold text-[var(--text-main)]">Morning</span>
+                            <span class="text-[var(--text-muted)]">6:30 – 8:30 AM</span>
+                        </div>
+                        <div class="flex justify-between p-4 rounded-2xl border border-[var(--border-light)] bg-[var(--bg-secondary)] hover:border-[var(--accent-color)] transition-colors">
+                            <span class="font-bold text-[var(--text-main)]">Mid‑day</span>
+                            <span class="text-[var(--text-muted)]">11:00 – 1:00 PM</span>
+                        </div>
+                        <div class="flex justify-between p-4 rounded-2xl border border-[var(--border-light)] bg-[var(--bg-secondary)] hover:border-[var(--accent-color)] transition-colors">
+                            <span class="font-bold text-[var(--text-main)]">Afternoon</span>
+                            <span class="text-[var(--text-muted)]">3:00 – 5:00 PM</span>
+                        </div>
+                        <div class="flex justify-between p-4 rounded-2xl border border-[var(--border-light)] bg-[var(--bg-secondary)] hover:border-[var(--accent-color)] transition-colors">
+                            <span class="font-bold text-[var(--text-main)]">Evening</span>
+                            <span class="text-[var(--text-muted)]">6:00 – 8:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative w-full aspect-[3/4] rounded-tr-[120px] rounded-bl-[120px] overflow-hidden shadow-2xl border-4 border-[var(--border-light)] order-1 lg:order-2">
+                    <img src="pictures/ind8.jpg" alt="Coaching" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-[#0a0e1a]/30"></div>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+    <!-- ============================================ -->
+    <!-- ENROLLMENT CTA SECTION - Dark Blue Theme -->
+    <!-- ============================================ -->
+<section id="enroll" class="w-full bg-[var(--bg-primary)] relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--accent-color)]/20 to-transparent pointer-events-none"></div>
+    <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-[var(--accent-color)]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 right-20 w-64 h-64 bg-[var(--accent-color)]/10 rounded-full blur-2xl pointer-events-none"></div>
+    
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%231a3a6b" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-50 pointer-events-none"></div>
+    
+    <div class="absolute bottom-0 left-0 w-full h-24 opacity-5 pointer-events-none">
+        <svg viewBox="0 0 1440 320" class="w-full h-full">
+            <path fill="var(--accent-color)" d="M0,128L48,149.3C96,171,192,213,288,213.3C384,213,480,171,576,149.3C672,128,768,128,864,149.3C960,171,1056,213,1152,213.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+    
+    <div class="absolute top-20 left-10 animate-float opacity-10 pointer-events-none">
+        <i class="fas fa-swimmer text-4xl text-[var(--accent-color)]"></i>
+    </div>
+    <div class="absolute bottom-20 right-10 animate-float-delayed opacity-10 pointer-events-none">
+        <i class="fas fa-swimming-pool text-4xl text-[var(--accent-color)]"></i>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[600px] relative">
+        <!-- Enhanced Image Container with Increased Padding -->
+        <div class="relative w-full h-[400px] lg:h-auto order-2 lg:order-1 group overflow-hidden p-4 lg:p-6">
+            <!-- Image Container with Border Radius and Padding -->
+            <div class="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl shadow-[var(--accent-color)]/10 border border-[var(--border-light)]">
+                <img src="pictures/rrr3.jpg" alt="Kids swimming" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                
+                <!-- Gradient Overlays -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[var(--bg-primary)]/95 via-[var(--bg-primary)]/60 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/90 via-[var(--bg-primary)]/20 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)]/20 via-transparent to-transparent"></div>
+                
+                <!-- Corner Decorative Elements -->
+                <div class="absolute top-6 left-6 w-16 h-16 border-t-2 border-l-2 border-[var(--accent-color)]/30 rounded-tl-2xl opacity-0 group-hover:opacity-100 transition-all duration-600"></div>
+                <div class="absolute top-6 right-6 w-16 h-16 border-t-2 border-r-2 border-[var(--accent-color)]/30 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-all duration-600"></div>
+                <div class="absolute bottom-6 left-6 w-16 h-16 border-b-2 border-l-2 border-[var(--accent-color)]/30 rounded-bl-2xl opacity-0 group-hover:opacity-100 transition-all duration-600"></div>
+                <div class="absolute bottom-6 right-6 w-16 h-16 border-b-2 border-r-2 border-[var(--accent-color)]/30 rounded-br-2xl opacity-0 group-hover:opacity-100 transition-all duration-600"></div>
+                
+                <!-- Bottom Gradient Glow -->
+                <div class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[var(--accent-color)]/10 to-transparent pointer-events-none"></div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="flex flex-col justify-center px-8 py-16 lg:px-20 order-1 lg:order-2 relative z-10 bg-[var(--bg-primary)]">
+            <div class="inline-flex items-center gap-3 bg-[var(--accent-color)]/20 px-5 py-2.5 rounded-full mb-6 border border-[var(--border-light)] backdrop-blur-sm w-fit">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-color)] opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[var(--accent-color)]"></span>
+                </span>
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.2em]">Start Your Journey</span>
+            </div>
+            
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight text-[var(--text-main)]">
+                Dive Into <br> 
+                <span class="text-[var(--accent-color)] relative inline-block">
+                    Excellence
+                    
+                </span> 
+                Today.
+            </h2>
+            
+            <p class="text-[var(--text-muted)] text-lg mb-8 max-w-lg leading-relaxed font-medium">
+                Limited spots available for all programs. Claim your <span class="text-[var(--accent-color)] font-bold">free trial session</span> and discover why AquaPulse is the premier swimming academy in the region.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                <div class="flex items-center gap-3 group hover:translate-x-1 transition-transform">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/30 flex items-center justify-center flex-shrink-0 border border-[var(--border-light)]">
+                        <i class="fas fa-check text-[var(--accent-color)] text-xs font-bold"></i>
+                    </div>
+                    <span class="text-[var(--text-main)] text-sm font-bold">Expert Coaches</span>
+                </div>
+                <div class="flex items-center gap-3 group hover:translate-x-1 transition-transform">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/30 flex items-center justify-center flex-shrink-0 border border-[var(--border-light)]">
+                        <i class="fas fa-check text-[var(--accent-color)] text-xs font-bold"></i>
+                    </div>
+                    <span class="text-[var(--text-main)] text-sm font-bold">Olympic Standard</span>
+                </div>
+                <div class="flex items-center gap-3 group hover:translate-x-1 transition-transform">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/30 flex items-center justify-center flex-shrink-0 border border-[var(--border-light)]">
+                        <i class="fas fa-check text-[var(--accent-color)] text-xs font-bold"></i>
+                    </div>
+                    <span class="text-[var(--text-main)] text-sm font-bold">Flexible Timings</span>
+                </div>
+                <div class="flex items-center gap-3 group hover:translate-x-1 transition-transform">
+                    <div class="w-8 h-8 rounded-full bg-[var(--accent-color)]/30 flex items-center justify-center flex-shrink-0 border border-[var(--border-light)]">
+                        <i class="fas fa-check text-[var(--accent-color)] text-xs font-bold"></i>
+                    </div>
+                    <span class="text-[var(--text-main)] text-sm font-bold">Free Trial</span>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="contact.html" class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[var(--bg-secondary)] text-[var(--text-main)] font-bold rounded-full border-2 border-[var(--border-light)] hover:bg-[var(--accent-color)] hover:text-white hover:border-[var(--accent-color)] hover:shadow-2xl hover:shadow-[var(--accent-color)]/30 hover:-translate-y-1 transition-all duration-300 text-base">
+                    <span>Free Trial Session</span>
+                    <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="programs.html" class="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[var(--bg-secondary)] text-[var(--text-main)] font-bold rounded-full border-2 border-[var(--border-light)] hover:bg-[var(--accent-color)] hover:text-white hover:border-[var(--accent-color)] hover:shadow-2xl hover:shadow-[var(--accent-color)]/30 hover:-translate-y-1 transition-all duration-300 text-base">
+                    <span>View All Programs</span>
+                    <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+   
+   <!-- ============================================ -->
+    <!-- FOOTER - Dark Blue Theme (UPGRADED) -->
+    <!-- ============================================ -->
+    <footer class="footer-advanced">
+        <!-- Background Decorations -->
+        <div class="bg-orb bg-orb--1"></div>
+        <div class="bg-orb bg-orb--2"></div>
+        <div class="bg-orb bg-orb--3"></div>
+        
+        
+        <div class="footer-inner">
+            <!-- Main Footer Grid -->
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div class="brand-col">
+                    <!-- FIXED LOGO - Added font-size: inherit to the span -->
+                    <a href="index.html" class="brand-link mb-6 inline-flex hover:scale-105 transition-transform duration-200" style="text-decoration: none;">
+                        <div class="brand-icon-wrapper">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="text-2xl brand-logo tracking-widest uppercase block" style="color: var(--text-main) !important;">
+                            <span style="color: var(--accent-color); font-size: inherit;">Aqua</span>Pulse
+                        </div>
+                    </a>
+                    
+                    <p class="brand-desc">
+                        Premium swimming academy with certified coaches, modern pools, and programs for all ages. Dive into excellence today.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Programs -->
+                <div class="link-col">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Little Fins</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Stroke Foundation</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Junior Competitive</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Elite Squad</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Adult Masters</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="link-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Coaches</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div class="link-col">
+                    <h4>Contact</h4>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                        <span class="text-block">45 Aqua Drive<br>Miami, FL 33101</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-phone"></i></div>
+                        <a href="tel:+12125550198">+1 305 555 0198</a>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+                        <a href="mailto:info@aquapulse.com">info@aquapulse.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-clock"></i></div>
+                        <span>Mon-Sat: 6:00 AM - 8:00 PM</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2026 <span>Aqua</span>Pulse. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Refund Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+            
+            <!-- Back to Top -->
+            <div style="text-align: center; margin-top: 1.8rem;">
+                <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; transition: color 0.2s;">
+                    <span>Back to Top</span>
+                    <i class="fas fa-arrow-up" style="font-size: 0.65rem; transition: transform 0.2s;"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Reset & Base (only for footer context) */
+        .footer-advanced * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .footer-advanced {
+            --bg-primary: #0b1a2f;
+            --border-light: rgba(56, 132, 255, 0.25);
+            --accent-color: #3b8cff;
+            --accent-glow: rgba(59, 140, 255, 0.3);
+            --text-main: #eaf0ff;
+            --text-muted: #a0bbdd;
+            --text-dim: #6c8ab0;
+            
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-light);
+            padding: 3rem 0 1.5rem;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 100%;
+        }
+        
+        .footer-advanced .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            opacity: 0.35;
+        }
+        .footer-advanced .bg-orb--1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #1f4d8a, transparent 70%);
+            top: -200px;
+            right: -100px;
+        }
+        .footer-advanced .bg-orb--2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #1a3f75, transparent 70%);
+            bottom: -150px;
+            left: -80px;
+        }
+        .footer-advanced .bg-orb--3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #0f2d55, transparent 70%);
+            top: 40%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+        }
+        .footer-advanced .wave-deco {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            opacity: 0.08;
+            pointer-events: none;
+            transform: rotate(180deg);
+        }
+        .footer-advanced .wave-deco svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .footer-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+            gap: 2.5rem 1.8rem;
+            margin-bottom: 2.2rem;
+        }
+        
+        .brand-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .brand-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1rem;
+            max-width: 28rem;
+            margin-bottom: 1.8rem;
+            font-weight: 400;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(59, 140, 255, 0.08);
+            border: 2px solid rgba(59, 140, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+        .social-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 140, 255, 0.35);
+        }
+        
+        .link-col h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.65rem;
+        }
+        .link-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2.2rem;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 4px;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+        
+        .link-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .link-col ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.98rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .link-col ul li a i {
+            font-size: 0.6rem;
+            color: var(--accent-color);
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s ease;
+        }
+        .link-col ul li a:hover {
+            color: var(--accent-color);
+        }
+        .link-col ul li a:hover i {
+            opacity: 1;
+            transform: translateX(0px);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.98rem;
+            transition: all 0.2s ease;
+            margin-bottom: 0.2rem;
+        }
+        .contact-item .icon-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(59, 140, 255, 0.08);
+            border: 2px solid rgba(59, 140, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+        .contact-item:hover .icon-circle {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+        .contact-item a, .contact-item span {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .contact-item a:hover {
+            color: var(--accent-color);
+        }
+        .contact-item .text-block {
+            line-height: 1.5;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.8rem;
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem 2rem;
+        }
+        .footer-bottom p {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--text-dim);
+        }
+        .footer-bottom p span {
+            color: var(--accent-color);
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem 2.2rem;
+        }
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.25s ease;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Back to top hover */
+        .footer-inner > div:last-child a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            transition: color 0.2s;
+        }
+        .footer-inner > div:last-child a:hover {
+            color: var(--accent-color);
+        }
+        .footer-inner > div:last-child a:hover i {
+            transform: translateY(-4px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+            .brand-col {
+                grid-column: 1 / -1;
+            }
+            .brand-desc {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 600px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+                gap: 1rem 1.5rem;
+            }
+            .footer-inner {
+                padding: 0 1.2rem;
+            }
+        }
+    </style>
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================ -->
+    <script>
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 30) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Drawer Logic
+        const mobileBtn = document.getElementById('mobile-btn'); 
+        const fullscreenMenu = document.getElementById('fullscreen-menu'); 
+        const closeMenu = document.getElementById('close-menu'); 
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        
+        function toggleMenu() { 
+            fullscreenMenu.classList.toggle('active'); 
+            drawerOverlay.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+        }
+        
+        mobileBtn.onclick = toggleMenu; 
+        closeMenu.onclick = toggleMenu; 
+        drawerOverlay.onclick = toggleMenu; 
+
+        // === THEME TOGGLE ===
+        const themeDesktop = document.getElementById('theme-toggle-desktop');
+        const themeMobile = document.getElementById('theme-toggle-mobile');
+        const themeIconDesktop = document.getElementById('theme-icon-desktop');
+        const themeIconMobile = document.getElementById('theme-icon-mobile');
+        
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme ? savedTheme === 'dark' : systemPrefersDark;
+        
+        function setTheme(isDarkMode) {
+            if (isDarkMode) {
+                document.body.classList.remove('light-mode');
+                if (themeIconDesktop) themeIconDesktop.className = 'fas fa-moon';
+                if (themeIconMobile) themeIconMobile.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.add('light-mode');
+                if (themeIconDesktop) themeIconDesktop.className = 'fas fa-sun';
+                if (themeIconMobile) themeIconMobile.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        
+        setTheme(isDark);
+        
+        function toggleTheme() {
+            const isCurrentlyDark = !document.body.classList.contains('light-mode');
+            setTheme(!isCurrentlyDark);
+        }
+        
+        if (themeDesktop) themeDesktop.addEventListener('click', toggleTheme);
+        if (themeMobile) themeMobile.addEventListener('click', toggleTheme);
+
+        // === RTL Toggle ===
+        const rtlBtn = document.getElementById('rtl-btn');
+        const rtlMobile = document.getElementById('rtl-toggle-mobile');
+        const rtlTexts = document.querySelectorAll('.rtl-text');
+        
+        function toggleRTL() {
+            const html = document.documentElement;
+            if (html.dir === 'rtl') {
+                html.dir = 'ltr';
+                rtlTexts.forEach(el => el.textContent = 'LTR');
+                if (rtlBtn) rtlBtn.textContent = 'LTR';
+            } else {
+                html.dir = 'rtl';
+                rtlTexts.forEach(el => el.textContent = 'RTL');
+                if (rtlBtn) rtlBtn.textContent = 'RTL';
+            }
+        }
+        
+        if (rtlBtn) rtlBtn.addEventListener('click', toggleRTL);
+        if (rtlMobile) rtlMobile.addEventListener('click', toggleRTL);
+
+        // Close mobile menu on window resize (>= 1280px)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1280) {
+                fullscreenMenu.classList.remove('active');
+                drawerOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Mobile Dropdown toggle for Home
+        const homeToggle = document.getElementById('mobile-home-toggle');
+        const homeItems = document.getElementById('mobile-home-items');
+        if (homeToggle && homeItems) {
+            homeToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('open');
+                homeItems.classList.toggle('open');
+            });
+        }
+    </script>
+</body>
+</html>
