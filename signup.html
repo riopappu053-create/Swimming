@@ -565,12 +565,30 @@
         }
 
         @media (max-width: 480px) {
-            .signup-container { padding: 1rem; }
-            .signup-card { padding: 1.5rem; }
-            .signup-header h1 { font-size: 1.1rem; }
-            .social-signup { flex-direction: column; }
-            .theme-corner { top: 1rem; right: 1rem; }
-            [dir="rtl"] .theme-corner { right: auto; left: 1rem; }
+            .signup-container { padding: 0.5rem; }
+            .signup-card { padding: 1.2rem 1rem; border-radius: 1.25rem; }
+            .signup-header { margin-bottom: 1rem; }
+            .signup-logo { margin-bottom: 0.5rem; gap: 0.4rem; }
+            .signup-logo-icon { width: 2rem; height: 2rem; border-radius: 0.5rem; }
+            .signup-logo-icon i { font-size: 1.1rem; }
+            .signup-logo-text { font-size: 1.2rem; }
+            .signup-header h1 { font-size: 1.15rem; margin-bottom: 0.2rem; }
+            .signup-header p { margin-top: 0; font-size: 0.8rem; }
+            .form-row { flex-direction: column; gap: 0.6rem; }
+            .form-group { margin-bottom: 0.6rem; }
+            .form-group label { margin-bottom: 0.2rem; font-size: 0.7rem; }
+            .form-group .input-wrapper input { padding-top: 0.6rem !important; padding-bottom: 0.6rem !important; font-size: 0.85rem !important; }
+            .password-strength { margin-top: 0.3rem; margin-bottom: 0.3rem; }
+            .password-reqs { margin-top: 0.3rem; font-size: 0.7rem; }
+            .terms-checkbox { margin: 0.6rem 0 0.8rem; font-size: 0.8rem; }
+            .terms-text { font-size: 0.65rem; white-space: nowrap; }
+            .btn-signup { padding: 0.65rem; font-size: 0.9rem; border-radius: 0.6rem; }
+            .signup-divider { margin: 0.8rem 0; font-size: 0.75rem; }
+            .social-signup { flex-direction: column; gap: 0.5rem; }
+            .social-signup button { padding: 0.5rem; font-size: 0.85rem; border-radius: 0.6rem; }
+            .signup-footer { margin-top: 0.8rem; font-size: 0.8rem; }
+            .theme-corner { top: 0.5rem; right: 0.5rem; transform: scale(0.75); transform-origin: top right; }
+            [dir="rtl"] .theme-corner { right: auto; left: 0.5rem; transform-origin: top left; }
         }
     </style>
 </head>
@@ -597,7 +615,7 @@
             <i class="fas fa-moon"></i>
         </button>
         <button id="rtlToggle" title="Toggle RTL/LTR">
-            <i class="fas fa-exchange-alt"></i>
+            <span class="rtl-text" style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; font-family: 'Oswald', sans-serif;">LTR</span>
         </button>
     </div>
 
@@ -683,7 +701,7 @@
                 <div class="form-options">
                     <label>
                         <input type="checkbox" id="terms" required>
-                        I agree to the <a href="#?">Terms of Service</a> and <a href="#?">Privacy Policy</a>
+                        <span class="terms-text">I agree to the <a href="#?">Terms of Service</a> and <a href="#?">Privacy Policy</a></span>
                     </label>
                 </div>
 
@@ -756,11 +774,18 @@
             // === RTL TOGGLE ===
             let savedDir = localStorage.getItem('direction') || 'ltr';
             html.setAttribute('dir', savedDir);
+            let rtlTextSpan = rtlToggle ? rtlToggle.querySelector('.rtl-text') : null;
+            if (rtlTextSpan) {
+                rtlTextSpan.textContent = savedDir === 'rtl' ? 'RTL' : 'LTR';
+            }
             function toggleRtl() {
                 let cur = html.getAttribute('dir');
                 let nw = cur === 'rtl' ? 'ltr' : 'rtl';
                 html.setAttribute('dir', nw);
                 localStorage.setItem('direction', nw);
+                if (rtlTextSpan) {
+                    rtlTextSpan.textContent = nw === 'rtl' ? 'RTL' : 'LTR';
+                }
             }
             if (rtlToggle) rtlToggle.addEventListener('click', toggleRtl);
 
