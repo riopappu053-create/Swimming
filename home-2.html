@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaPulse · Aquatic Center</title>
+     <link rel="icon" type="image/jpeg" href="/homepic/logo.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+                        display: ['"Oswald"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;600&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+
+        /* === TYPOGRAPHY STANDARDIZATION === */
+        h1, h2, h3, h4, h5, h6, .brand-logo {
+            font-weight: 600 !important;
+        }
+        
+        p {
+            font-weight: 400 !important;
+        }
+        
+        b, strong, .font-bold {
+            font-weight: 600 !important;
+        }
+        
+        .font-extrabold {
+            font-weight: 700 !important;
+        }
+        
+        .text-muted {
+            font-weight: 400;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            padding-top: 76px;
+        }
+        .hero {
+            margin-top: -76px;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-logo {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        :root {
+            --bg-color: #0a0e1a;
+            --bg-secondary: #0f1422;
+            --bg-card: #141b2b;
+            --bg-inverted: #F5F5F5;
+            --text-main: #ffffff;
+            --text-muted: #8aabdd;
+            --accent-color: #4a7bc7;
+            --accent-dark: #1a3a6b;
+            --border-color: #1a3a6b;
+            --border-light: rgba(26, 58, 107, 0.3);
+            --nav-bg: rgba(10, 14, 26, 0.95);
+            --drawer-bg: rgba(10, 14, 26, 0.98);
+            --menu-hover-bg: rgba(74, 123, 199, 0.12);
+        }
+
+        body.light-mode {
+            --bg-color: #F8F6F2;
+            --bg-secondary: #EFECE6;
+            --bg-card: #FFFFFF;
+            --bg-inverted: #0B0B0B;
+            --text-main: #1A1A1A;
+            --text-muted: #555555;
+            --accent-color: #1A6DF5;
+            --accent-dark: #0F4AB5;
+            --border-color: #D0CDC5;
+            --border-light: rgba(26, 109, 245, 0.2);
+            --nav-bg: rgba(248, 246, 242, 0.95);
+            --drawer-bg: rgba(248, 246, 242, 0.98);
+            --menu-hover-bg: rgba(26, 109, 245, 0.08);
+        }
+
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .ml-auto { margin-right: auto; margin-left: 0; }
+        [dir="rtl"] .mr-auto { margin-left: auto; margin-right: 0; }
+
+        @keyframes subtleZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+        .animate-zoom { animation: subtleZoom 25s infinite alternate ease-in-out; }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--nav-bg);
+            padding: 0 32px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            border-bottom: 1px solid transparent;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .navbar.scrolled { 
+            height: 68px;
+            background: var(--bg-color);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        body.light-mode .navbar.scrolled { 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .nav-link { 
+            position: relative; 
+            padding: 8px 16px; 
+            margin: 0 2px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 12px; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 1.2px; 
+            transition: all 0.25s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 5px; 
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 2px; 
+            left: 50%; 
+            width: 0; 
+            height: 2px;
+            background: var(--accent-color); 
+            transition: all 0.3s ease; 
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 50%; }
+        .nav-link:hover, .nav-link.active { 
+            color: var(--accent-color); 
+            background: var(--menu-hover-bg);
+        }
+        
+        .dropdown { position: relative; display: flex; align-items: center; height: 100%; }
+        .dropdown-menu { 
+            position: absolute; 
+            top: 58px; 
+            left: 0; 
+            transform: translateY(8px); 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 100; 
+        }
+        .navbar.scrolled .dropdown-menu { top: 52px; }
+        .dropdown-inner { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-light); 
+            min-width: 200px; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); 
+            padding: 6px 0; 
+            display: flex; 
+            flex-direction: column; 
+            border-radius: 8px;
+        }
+        body.light-mode .dropdown-inner { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        
+        .dropdown-item { 
+            display: block; 
+            padding: 10px 22px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 11px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            transition: all 0.2s; 
+            text-align: left; 
+            white-space: nowrap; 
+        }
+        .dropdown-item:hover { 
+            background: var(--menu-hover-bg); 
+            color: var(--accent-color); 
+            padding-left: 28px; 
+        }
+        [dir="rtl"] .dropdown-item:hover { padding-left: 22px; padding-right: 28px; }
+
+        .theme-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .theme-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #fff;
+            transform: rotate(20deg);
+        }
+
+        .rtl-btn-style {
+            width: 42px; 
+            height: 28px; 
+            background: var(--bg-secondary); 
+            border-radius: 4px; 
+            border: 1px solid var(--border-light);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 10px; 
+            font-weight: 600; 
+            cursor: pointer;
+            color: var(--text-main); 
+            transition: all 0.3s ease; 
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        .rtl-btn-style:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+        .rtl-toggle-modern {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            padding: 5px 12px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .rtl-toggle-modern:hover { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+
+        .btn { 
+            padding: 10px 24px; 
+            font-weight: 600; 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            transition: all 0.3s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            border: 1px solid transparent; 
+            font-family: 'Inter', sans-serif;
+            border-radius: 6px;
+        }
+        .btn-solid { background: var(--accent-color); color: #FFFFFF !important; }
+        .btn-solid:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74, 123, 199, 0.3); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-light); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--accent-color); color: var(--accent-color) !important; background: var(--menu-hover-bg); }
+
+        .drawer-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.7); 
+            z-index: 999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.35s ease; 
+            backdrop-filter: blur(4px); 
+        }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+
+        .fullscreen-menu { 
+            position: fixed; 
+            top: 0; 
+            right: 0; 
+            width: 100%; 
+            max-width: 380px; 
+            height: 100dvh; 
+            background: var(--drawer-bg); 
+            z-index: 1001; 
+            display: flex; 
+            flex-direction: column; 
+            opacity: 0; 
+            visibility: hidden; 
+            transform: translateX(100%); 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            border-left: 1px solid var(--border-light);
+        }
+        [dir="rtl"] .fullscreen-menu { right: auto; left: 0; transform: translateX(-100%); border-left: none; border-right: 1px solid var(--border-light); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; transform: translateX(0); }
+        
+        .mobile-link { 
+            display: block; 
+            width: 100%; 
+            padding: 16px 28px; 
+            font-size: 1rem; 
+            font-family: 'Oswald'; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            color: var(--text-main); 
+            text-decoration: none; 
+            transition: all 0.25s; 
+            border-bottom: 1px solid var(--border-light); 
+        }
+        .mobile-link:hover { 
+            color: var(--accent-color); 
+            padding-left: 36px; 
+            background: var(--menu-hover-bg); 
+        }
+        [dir="rtl"] .mobile-link:hover { padding-left: 28px; padding-right: 36px; }
+        
+        .mobile-dropdown {
+            border-bottom: 1px solid var(--border-light);
+        }
+        .mobile-dropdown-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 28px;
+            font-family: 'Oswald';
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 1rem;
+        }
+        .mobile-dropdown-header:hover {
+            color: var(--accent-color);
+            background: var(--menu-hover-bg);
+        }
+        .mobile-dropdown-header i {
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+        .mobile-dropdown-header.open i {
+            transform: rotate(180deg);
+        }
+        .mobile-dropdown-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.3s ease;
+            padding-left: 16px;
+            background: var(--bg-secondary);
+        }
+        .mobile-dropdown-items.open {
+            max-height: 200px;
+            padding: 8px 0;
+        }
+        .mobile-dropdown-items .mobile-link {
+            border-bottom: none;
+            padding: 10px 28px;
+            font-size: 0.95rem;
+            font-family: 'Oswald';
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+        .mobile-dropdown-items .mobile-link:hover {
+            color: var(--accent-color);
+            padding-left: 36px;
+            background: var(--menu-hover-bg);
+        }
+
+        .brand-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(74, 123, 199, 0.3);
+            background: rgba(74, 123, 199, 0.15);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .brand-icon-wrapper i {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+        .brand-icon-wrapper:hover {
+            background: rgba(74, 123, 199, 0.25);
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .mobile-menu-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+        .mobile-menu-btn:hover {
+            color: var(--accent-color);
+            background: var(--menu-hover-bg);
+        }
+
+        .menu-brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .menu-brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(74, 123, 199, 0.3);
+            background: rgba(74, 123, 199, 0.15);
+            flex-shrink: 0;
+        }
+        .menu-brand-icon i {
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes float-delayed {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float-delayed 3s ease-in-out 1.5s infinite;
+        }
+
+        .program-card {
+            transition: all 0.5s ease;
+        }
+        .program-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(74, 123, 199, 0.1);
+        }
+    </style>
+</head>
+<body>
+ <!-- ============================================ -->
+    <!-- STICKY NAVBAR -->
+    <!-- ============================================ -->
+    <nav class="navbar" id="main-nav">
+        <div class="w-full flex items-center justify-between max-w-[1440px] mx-auto">
+            <div class="flex items-center">
+                <a href="index.html" class="brand-link">
+                    <div class="brand-icon-wrapper">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <div class="text-2xl brand-logo tracking-widest uppercase block" style="color: var(--text-main) !important;">
+                        <span style="color: var(--accent-color);">Aqua</span>Pulse
+                    </div>
+                </a>
+            </div>
+            
+            <div class="hidden xl:flex justify-center items-center flex-1">
+                <div class="dropdown">
+                    <div class="nav-link active">Home <i class="fas fa-chevron-down text-[8px] ml-1 opacity-50"></i></div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-inner">
+                            <a href="index.html" class="dropdown-item">Home Page 1</a>
+                            <a href="home-2.html" class="dropdown-item" style="color: var(--accent-color);">Home Page 2</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="programs.html" class="nav-link">Programs</a>
+                <a href="schedule.html" class="nav-link">Schedule</a>
+                <a href="coaches.html" class="nav-link">Coaches</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+
+            <div class="hidden xl:flex items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <a href="login.html" class="btn btn-outline !py-1.5 !px-5 !text-[10px]">Login</a>
+                    <a href="signup.html" class="btn btn-solid !py-1.5 !px-5 !text-[10px]">Sign Up</a>
+                </div>
+                <div class="w-px h-5 bg-[var(--border-light)] mx-1"></div>
+                <button id="theme-toggle-desktop" class="theme-btn" role="button" aria-label="Toggle theme">
+                    <i class="fas fa-moon" id="theme-icon-desktop"></i>
+                </button>
+                <button id="rtl-btn" class="rtl-btn-style" title="Toggle LTR/RTL">LTR</button>
+            </div>
+
+            <!-- Mobile Menu Button - Only hamburger icon -->
+            <div class="xl:hidden flex items-center justify-end gap-3">
+                <button id="mobile-btn" class="mobile-menu-btn" aria-label="Toggle menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <div class="fullscreen-menu" id="fullscreen-menu">
+        <!-- Menu Header with Logo Icon -->
+        <div class="w-full px-6 py-6 flex justify-between items-center shrink-0 border-b border-[var(--border-light)]">
+            <a href="index.html" class="menu-brand-link">
+                <div class="menu-brand-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <div class="text-2xl brand-logo tracking-widest uppercase block" style="color: var(--text-main) !important;">
+                        <span style="color: var(--accent-color);">Aqua</span>Pulse
+                    </div>
+            </a>
+            <button id="close-menu" class="w-10 h-10 flex items-center justify-center transition-all text-2xl text-[var(--text-main)] hover:text-[var(--accent-color)]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="flex flex-col w-full overflow-y-auto flex-1 py-3">
+            <!-- Mobile Dropdown for Home -->
+            <div class="mobile-dropdown">
+                <div class="mobile-dropdown-header" id="mobile-home-toggle">
+                    <span>Home</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="mobile-dropdown-items" id="mobile-home-items">
+                    <a href="index.html" class="mobile-link" style="color: var(--accent-color);">Home Page 1</a>
+                    <a href="home-2.html" class="mobile-link">Home Page 2</a>
+                </div>
+            </div>
+            <!-- Regular mobile links -->
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="programs.html" class="mobile-link">Programs</a>
+            <a href="schedule.html" class="mobile-link">Schedule</a>
+            <a href="coaches.html" class="mobile-link">Coaches</a>
+            <a href="gallery.html" class="mobile-link">Gallery</a>
+            <a href="contact.html" class="mobile-link">Contact</a>
+        </div>
+
+        <div class="w-full px-6 py-6 border-t border-[var(--border-light)] flex flex-col gap-5 shrink-0 bg-[var(--bg-secondary)]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Theme</span>
+                    <button id="theme-toggle-mobile" class="theme-btn" role="button" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="theme-icon-mobile"></i>
+                    </button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[var(--text-muted)] font-medium text-[10px] uppercase tracking-widest">Dir</span>
+                    <button id="rtl-toggle-mobile" class="rtl-toggle-modern" title="Toggle RTL/LTR">
+                        <span class="rtl-text">LTR</span>
+                        <i class="fas fa-arrow-right-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex gap-3 w-full">
+                <a href="login.html" class="btn btn-outline flex-1 !py-2.5">Login</a>
+                <a href="signup.html" class="btn btn-solid flex-1 !py-2.5"> signup</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: HERO – AQUATIC CENTER               -->
+    <!-- ============================================ -->
+    <section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-b border-[var(--border-light)] hero">
+        <div class="absolute inset-0 z-0">
+            <img src="pictures/hero_home2.jpg" alt="Aquatic Center" class="w-full h-full object-cover scale-110 animate-zoom">
+            <div class="absolute inset-0 bg-[#0a0e1a]/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#0a0e1a]/80 via-[#0a0e1a]/40 to-[#0a0e1a]/80"></div>
+            <div class="absolute inset-0 opacity-20" style="background: radial-gradient(ellipse at 30% 50%, #4a7bc7 0%, transparent 70%);"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+            <span class="inline-block text-[var(--accent-color)] text-sm font-bold uppercase tracking-[0.35em] mb-6">
+                <i class="fas fa-swimmer mr-2"></i>
+                Aquatic Center
+            </span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight text-white mb-8 drop-shadow-lg">
+                Where <br>
+                <span class="text-[var(--accent-color)] drop-shadow-md">Champions Rise</span>
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-white/90 leading-8 mb-12 drop-shadow-lg">
+                World‑class aquatic facility with Olympic‑grade pools, expert coaching, 
+                and programs for every age. Dive into excellence today.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-5">
+                <a href="#programs" class="px-10 py-4 bg-[var(--accent-color)] text-white rounded-full font-semibold text-lg hover:scale-105 transition duration-300 shadow-lg shadow-[var(--accent-color)]/30">
+                    Explore Programs
+                </a>
+                <a href="#contact" class="px-10 py-4 border-2 border-white text-white rounded-full font-semibold text-lg hover:bg-white hover:text-[#0a0e1a] transition duration-300 shadow-lg">
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: ABOUT – THE CENTER                 -->
+    <!-- ============================================ -->
+    <section id="about" class="w-full py-24 bg-[#f4f1ea]">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div class="relative w-full h-full min-h-[400px] lg:min-h-[600px]">
+                    <!-- Sharp image without rounded corners or shadow -->
+                    <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1000&q=80" alt="Aquatic center pool" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+                
+                <div class="flex flex-col items-start justify-center py-10 lg:py-0">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-[2px] bg-[#1A6DF5]"></div>
+                        <span class="text-[#1A6DF5] text-xs font-bold uppercase tracking-[0.2em]">Our Mission</span>
+                    </div>
+                    
+                    <h2 class="text-4xl md:text-5xl lg:text-[4rem] font-bold text-[#111827] mb-6 leading-[1.1] uppercase tracking-wide">
+                        PREMIER <span class="text-[#1A6DF5]">AQUATIC</span><br>FACILITY
+                    </h2>
+                    
+                    <p class="text-gray-700 text-lg leading-relaxed mb-10 max-w-lg">
+                        AquaPulse Aquatic Center is a state-of-the-art facility designed for swimmers of all levels. From beginners to elite athletes, we provide the environment, coaching, and technology to help you excel.
+                    </p>
+                    
+                    <div class="space-y-6 w-full">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5 border border-blue-100">
+                                <i class="fas fa-medal text-[#1A6DF5] text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[#111827] font-bold text-sm uppercase tracking-wider mb-1">Olympic Standards</h4>
+                                <p class="text-gray-600 text-sm">FINA-approved pools and training equipment.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 mt-0.5 border border-blue-100">
+                                <i class="fas fa-users text-[#1A6DF5] text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[#111827] font-bold text-sm uppercase tracking-wider mb-1">Expert Coaches</h4>
+                                <p class="text-gray-600 text-sm">Certified professionals with international experience.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: FACILITIES                        -->
+    <!-- ============================================ -->
+    <section id="facilities" class="w-full py-24 bg-[var(--bg-secondary)] border-b border-[var(--border-light)] relative overflow-hidden">
+        <!-- Background decorations -->
+        <div class="absolute -right-40 top-20 w-80 h-80 bg-[var(--accent-color)]/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 bottom-10 w-60 h-60 bg-[var(--accent-color)]/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
+            <div class="flex flex-col lg:flex-row gap-8 lg:gap-20 items-start lg:items-end mb-16">
+                <div class="max-w-2xl">
+                    <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.3em] inline-flex items-center bg-[var(--bg-card)] px-6 py-2 rounded-full border border-[var(--border-light)] mb-4">
+                        <i class="fas fa-building mr-2"></i> Aquatic Arena
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-6 uppercase tracking-wide">
+                        Our <span class="text-[var(--accent-color)]">Facilities</span>
+                    </h2>
+                    <div class="w-16 h-1 bg-[var(--accent-color)] mb-6"></div>
+                    <p class="text-[var(--text-muted)] text-lg leading-relaxed">
+                        We offer state-of-the-art facilities designed to provide the best training and leisure experience. From temperature-controlled pools to advanced fitness centers.
+                    </p>
+                </div>
+                <div class="hidden lg:block ml-auto pb-2">
+                    <a href="#contact" class="btn btn-outline border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-300">
+                        Book a Tour <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bento Box Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                <!-- Facility 1: Olympic-Sized Pool (Spans 2 columns on lg) -->
+                <div class="group relative bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl overflow-hidden shadow-lg hover:border-[var(--accent-color)] hover:-translate-y-1 transition-all duration-500 md:col-span-2 lg:col-span-2 min-h-[320px] flex flex-col md:flex-row">
+                    <div class="md:w-1/2 h-56 md:h-auto overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/olympic_pool.jpg" alt="Olympic-Sized Pool" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                    </div>
+                    <div class="relative h-full p-8 flex flex-col z-10 flex-grow md:w-1/2">
+                        <div class="w-14 h-14 rounded-full bg-[var(--accent-color)]/10 border border-[var(--border-light)] flex items-center justify-center text-[var(--accent-color)] text-2xl mb-6 group-hover:scale-110 group-hover:bg-[var(--accent-color)] group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-bold text-[var(--text-main)] mb-3 uppercase tracking-wide">Olympic-Sized Pool</h3>
+                        <p class="text-[var(--text-muted)] text-base max-w-xl leading-relaxed">FINA-approved 50m pool with anti-wave lanes, pristine water quality, and precision timing systems for competitive training. The facility also features professional starting blocks, dedicated diving areas, and comfortable spectator seating for local tournaments.</p>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-48 h-48 bg-[var(--accent-color)]/5 rounded-tl-full -mr-12 -mb-12 transition-transform duration-500 group-hover:scale-150"></div>
+                </div>
+
+                <!-- Facility 2: Heated Therapy Pool -->
+                <div class="group relative bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl overflow-hidden shadow-lg hover:border-[var(--accent-color)] hover:-translate-y-1 transition-all duration-500 min-h-[320px] flex flex-col">
+                    <div class="h-48 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/therapy_pool.jpg" alt="Heated Therapy Pool" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                    </div>
+                    <div class="relative h-full p-8 flex flex-col z-10 flex-grow">
+                        <div class="w-12 h-12 rounded-full bg-[var(--accent-color)]/10 border border-[var(--border-light)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-6 group-hover:scale-110 group-hover:bg-[var(--accent-color)] group-hover:text-white transition-all duration-300">
+                            <i class="fas fa-hot-tub"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 uppercase tracking-wide">Heated Therapy Pool</h3>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">Temperature-controlled environment designed for optimal muscle recovery and specialized aquatic therapy sessions.</p>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-32 h-32 bg-[var(--accent-color)]/5 rounded-tl-full -mr-8 -mb-8 transition-transform duration-500 group-hover:scale-150"></div>
+                </div>
+
+                <!-- Facility 3: Fitness Center -->
+                <div class="group relative bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl overflow-hidden shadow-lg hover:border-[var(--accent-color)] hover:-translate-y-1 transition-all duration-500 min-h-[250px] flex flex-col">
+                    <div class="h-48 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/fitness_center.jpg" alt="Fitness Center" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                    </div>
+                    <div class="relative p-8 flex flex-col flex-grow justify-start">
+                        <div class="w-12 h-12 rounded-full bg-[var(--accent-color)]/10 border border-[var(--border-light)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-6 group-hover:scale-110 group-hover:bg-[var(--accent-color)] group-hover:text-white transition-all duration-300 flex-shrink-0">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 uppercase tracking-wide">Fitness Center</h3>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">Fully equipped dry-land training zone featuring advanced strength and cardiovascular conditioning equipment.</p>
+                    </div>
+                </div>
+
+                <!-- Facility 4: Modern Locker Rooms -->
+                <div class="group relative bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl overflow-hidden shadow-lg hover:border-[var(--accent-color)] hover:-translate-y-1 transition-all duration-500 min-h-[250px] flex flex-col">
+                    <div class="h-48 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/locker_room.jpg" alt="Modern Locker Rooms" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                    </div>
+                    <div class="relative p-8 flex flex-col flex-grow justify-start">
+                        <div class="w-12 h-12 rounded-full bg-[var(--accent-color)]/10 border border-[var(--border-light)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-6 group-hover:scale-110 group-hover:bg-[var(--accent-color)] group-hover:text-white transition-all duration-300 flex-shrink-0">
+                            <i class="fas fa-door-closed"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 uppercase tracking-wide">Modern Locker Rooms</h3>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">Spacious, hygienic changing areas with secure digital lockers, private showers, and premium grooming amenities.</p>
+                    </div>
+                </div>
+
+                <!-- Facility 5: Relaxation Lounge -->
+                <div class="group relative bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl overflow-hidden shadow-lg hover:border-[var(--accent-color)] hover:-translate-y-1 transition-all duration-500 min-h-[250px] flex flex-col">
+                    <div class="h-48 w-full overflow-hidden relative flex-shrink-0">
+                        <img src="pictures/relaxation_lounge.jpg" alt="Relaxation Lounge" class="w-full h-full object-cover transition-transform duration-600 group-hover:scale-105">
+                    </div>
+                    <div class="relative p-8 flex flex-col flex-grow justify-start">
+                        <div class="w-12 h-12 rounded-full bg-[var(--accent-color)]/10 border border-[var(--border-light)] flex items-center justify-center text-[var(--accent-color)] text-xl mb-6 group-hover:scale-110 group-hover:bg-[var(--accent-color)] group-hover:text-white transition-all duration-300 flex-shrink-0">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 uppercase tracking-wide">Relaxation Lounge</h3>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed">A serene, comfortable environment to unwind pre or post-workout with healthy refreshments and Wi-Fi access.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile CTA (shows only on small screens) -->
+            <div class="mt-10 text-center lg:hidden">
+                <a href="#contact" class="btn btn-outline border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white w-full sm:w-auto">
+                    Book a Facility Tour <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: MEMBERSHIP PLANS                  -->
+    <!-- ============================================ -->
+    <section id="memberships" class="w-full py-24 bg-[var(--bg-color)] border-b border-[var(--border-light)] relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--accent-color)]/5 to-transparent pointer-events-none"></div>
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.3em] mb-4 inline-block relative">
+                    <span class="absolute -left-8 top-1/2 w-6 h-px bg-[var(--accent-color)]/50 -translate-y-1/2 hidden sm:block"></span>
+                    Flexible Options
+                    <span class="absolute -right-8 top-1/2 w-6 h-px bg-[var(--accent-color)]/50 -translate-y-1/2 hidden sm:block"></span>
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-6">
+                    Membership <span class="text-[var(--accent-color)]">Plans</span>
+                </h2>
+                <div class="w-16 h-1 bg-[var(--accent-color)] mx-auto mb-6"></div>
+                <p class="text-[var(--text-muted)] text-lg">Choose the perfect plan for your aquatic journey.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl p-8 flex flex-col shadow-lg hover:-translate-y-2 transition-transform duration-300">
+                    <h3 class="text-2xl font-bold text-[var(--text-main)] mb-2 uppercase tracking-wide">Basic Swimmer</h3>
+                    <p class="text-[var(--text-muted)] text-sm mb-6">Perfect for casual swimmers</p>
+                    <div class="text-4xl font-extrabold text-[var(--text-main)] mb-6">$49<span class="text-base font-normal text-[var(--text-muted)]">/month</span></div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Access to Main Pool</li>
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Open Swim Hours</li>
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Standard Locker Access</li>
+                        <li class="flex items-start gap-3 text-[var(--text-muted)] text-sm"><i class="fas fa-times text-[var(--text-muted)]/50 mt-1"></i> No Group Classes</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline w-full text-center border-[var(--border-light)] hover:border-[var(--accent-color)] text-[var(--text-main)] hover:text-[var(--accent-color)]">Choose Basic</a>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="bg-[var(--accent-color)] border border-[var(--accent-color)] rounded-3xl p-8 flex flex-col shadow-2xl shadow-[var(--accent-color)]/20 transform md:-translate-y-4 relative">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-[var(--accent-color)] text-[10px] font-bold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-md">Most Popular</div>
+                    <h3 class="text-2xl font-bold text-white mb-2 uppercase tracking-wide">Pro Athlete</h3>
+                    <p class="text-white/80 text-sm mb-6">For competitive training</p>
+                    <div class="text-4xl font-extrabold text-white mb-6">$99<span class="text-base font-normal text-white/80">/month</span></div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3 text-white text-sm"><i class="fas fa-check text-white mt-1"></i> Full Facility Access</li>
+                        <li class="flex items-start gap-3 text-white text-sm"><i class="fas fa-check text-white mt-1"></i> Unlimited Group Classes</li>
+                        <li class="flex items-start gap-3 text-white text-sm"><i class="fas fa-check text-white mt-1"></i> Premium Locker & Towel Service</li>
+                        <li class="flex items-start gap-3 text-white text-sm"><i class="fas fa-check text-white mt-1"></i> 1 Personal Session/Month</li>
+                    </ul>
+                    <a href="#contact" class="btn bg-white text-[var(--accent-color)] hover:bg-gray-100 w-full text-center">Choose Pro</a>
+                </div>
+
+                <!-- Family Plan -->
+                <div class="bg-[var(--bg-card)] border border-[var(--border-light)] rounded-3xl p-8 flex flex-col shadow-lg hover:-translate-y-2 transition-transform duration-300">
+                    <h3 class="text-2xl font-bold text-[var(--text-main)] mb-2 uppercase tracking-wide">Family Pass</h3>
+                    <p class="text-[var(--text-muted)] text-sm mb-6">Fun for the whole family</p>
+                    <div class="text-4xl font-extrabold text-[var(--text-main)] mb-6">$149<span class="text-base font-normal text-[var(--text-muted)]">/month</span></div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Up to 4 Family Members</li>
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Access to Main & Therapy Pools</li>
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Kids Weekend Splash Access</li>
+                        <li class="flex items-start gap-3 text-[var(--text-main)] text-sm"><i class="fas fa-check text-[var(--accent-color)] mt-1"></i> Family Locker Room Access</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline w-full text-center border-[var(--border-light)] hover:border-[var(--accent-color)] text-[var(--text-main)] hover:text-[var(--accent-color)]">Choose Family</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: UPCOMING EVENTS                   -->
+    <!-- ============================================ -->
+    <section id="events" class="relative w-full py-32 overflow-hidden border-b border-[var(--border-light)]">
+        <!-- Parallax Background Image -->
+        <div class="absolute inset-0">
+            <!-- Using Unsplash as background placeholder -->
+            <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1920&q=80" alt="Aquatic Events" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/60 dark:bg-black/80"></div>
+        </div>
+
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10 flex flex-col lg:flex-row gap-16 items-center">
+            
+            <div class="lg:w-1/2 flex flex-col items-start justify-center">
+                <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md px-5 py-2.5 rounded-full mb-6 border border-white/30">
+                    <span class="text-white text-xs font-bold uppercase tracking-[0.2em]">Community & Competition</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 uppercase tracking-wide leading-tight">
+                    UPCOMING <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300">EVENTS</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-300 to-cyan-300 mb-8"></div>
+                <p class="text-white/80 text-lg max-w-xl leading-relaxed mb-10">
+                    Join us for competitive meets, community fun days, and intensive training camps. Experience the vibrant AquaPulse community in action.
+                </p>
+                <a href="#contact" class="btn bg-[var(--accent-color)] border-none text-white hover:bg-[var(--accent-dark)] px-8 py-4 rounded-full font-bold transition-transform hover:scale-105 shadow-[0_10px_30px_rgba(74,123,199,0.3)]">
+                    View All Events <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                </a>
+            </div>
+
+            <div class="lg:w-1/2 w-full">
+                <div class="flex flex-col gap-5">
+                    
+                    <!-- Event 1 -->
+                    <div class="group flex items-center justify-between p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex flex-col items-center justify-center bg-[var(--accent-color)] text-white w-16 h-16 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                                <span class="text-xs font-bold uppercase tracking-wider">Aug</span>
+                                <span class="text-2xl font-extrabold leading-none">24</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg md:text-xl tracking-wide mb-1">Regional Swim Meet</h4>
+                                <span class="text-blue-200 text-sm"><i class="fas fa-map-marker-alt mr-2 text-[var(--accent-color)]"></i>Main Olympic Pool</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div class="group flex items-center justify-between p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex flex-col items-center justify-center bg-[var(--accent-color)] text-white w-16 h-16 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                                <span class="text-xs font-bold uppercase tracking-wider">Sep</span>
+                                <span class="text-2xl font-extrabold leading-none">05</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg md:text-xl tracking-wide mb-1">Youth Summer Splash</h4>
+                                <span class="text-blue-200 text-sm"><i class="fas fa-map-marker-alt mr-2 text-[var(--accent-color)]"></i>Recreation Zone</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="group flex items-center justify-between p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300">
+                        <div class="flex items-center gap-6">
+                            <div class="flex flex-col items-center justify-center bg-[var(--accent-color)] text-white w-16 h-16 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+                                <span class="text-xs font-bold uppercase tracking-wider">Sep</span>
+                                <span class="text-2xl font-extrabold leading-none">12</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg md:text-xl tracking-wide mb-1">Elite Stroke Clinic</h4>
+                                <span class="text-blue-200 text-sm"><i class="fas fa-user-tie mr-2 text-[var(--accent-color)]"></i>With Coach Michael Torres</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: COACHES                           -->
+    <!-- ============================================ -->
+    <section id="coaches" class="w-full py-24 bg-[#f4f1ea]">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="text-center mb-20">
+                <span class="text-[#1A6DF5] text-xs font-bold uppercase tracking-[0.2em] inline-flex items-center gap-2 bg-white px-6 py-2.5 rounded-full border border-blue-100 shadow-sm">
+                    <i class="fas fa-chalkboard-teacher text-blue-500"></i> MEET THE TEAM
+                </span>
+                
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#111827] mt-8 mb-4 uppercase tracking-wide">
+                    OUR <span class="text-[#1A6DF5]">COACHES</span>
+                </h2>
+                
+                <div class="w-16 h-[3px] bg-[#1A6DF5] mx-auto mt-6"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+                <!-- Coach 1 -->
+                <div class="text-center group flex flex-col items-center">
+                    <div class="w-48 h-48 rounded-full mx-auto overflow-hidden mb-6 shadow-[0_15px_40px_rgba(26,109,245,0.15)] ring-4 ring-white transition-all duration-500 group-hover:-translate-y-2">
+                        <img src="homepic/coach11.jpg" alt="Michael Torres" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-lg font-bold text-[#111827] uppercase tracking-wide">Michael Torres</h4>
+                    <p class="text-[#1A6DF5] text-sm mt-1 mb-2">Head Coach</p>
+                    <p class="text-gray-600 text-sm">20+ years experience</p>
+                </div>
+                
+                <!-- Coach 2 -->
+                <div class="text-center group flex flex-col items-center">
+                    <div class="w-48 h-48 rounded-full mx-auto overflow-hidden mb-6 shadow-[0_15px_40px_rgba(26,109,245,0.15)] ring-4 ring-white transition-all duration-500 group-hover:-translate-y-2">
+                        <img src="homepic/coach12.jpg" alt="Sarah Chen" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-lg font-bold text-[#111827] uppercase tracking-wide">Sarah Chen</h4>
+                    <p class="text-[#1A6DF5] text-sm mt-1 mb-2">Stroke Specialist</p>
+                    <p class="text-gray-600 text-sm">Former Olympian</p>
+                </div>
+                
+                <!-- Coach 3 -->
+                <div class="text-center group flex flex-col items-center">
+                    <div class="w-48 h-48 rounded-full mx-auto overflow-hidden mb-6 shadow-[0_15px_40px_rgba(26,109,245,0.15)] ring-4 ring-white transition-all duration-500 group-hover:-translate-y-2">
+                        <img src="homepic/coach13.jpg" alt="David Kim" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-lg font-bold text-[#111827] uppercase tracking-wide">David Kim</h4>
+                    <p class="text-[#1A6DF5] text-sm mt-1 mb-2">Junior Program</p>
+                    <p class="text-gray-600 text-sm">15 years coaching</p>
+                </div>
+                
+                <!-- Coach 4 -->
+                <div class="text-center group flex flex-col items-center">
+                    <div class="w-48 h-48 rounded-full mx-auto overflow-hidden mb-6 shadow-[0_15px_40px_rgba(26,109,245,0.15)] ring-4 ring-white transition-all duration-500 group-hover:-translate-y-2">
+                        <img src="homepic/coach14.jpg" alt="Elena Petrova" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h4 class="text-lg font-bold text-[#111827] uppercase tracking-wide">Elena Petrova</h4>
+                    <p class="text-[#1A6DF5] text-sm mt-1 mb-2">Elite Squad</p>
+                    <p class="text-gray-600 text-sm">National record holder</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: TESTIMONIALS                      -->
+    <!-- ============================================ -->
+    <section id="testimonials" class="w-full py-24 bg-[var(--bg-secondary)] border-b border-[var(--border-light)]">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.3em] mb-4 inline-block relative">
+                    <span class="absolute -left-8 top-1/2 w-6 h-px bg-[var(--accent-color)]/50 -translate-y-1/2 hidden sm:block"></span>
+                    Success Stories
+                    <span class="absolute -right-8 top-1/2 w-6 h-px bg-[var(--accent-color)]/50 -translate-y-1/2 hidden sm:block"></span>
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-6">
+                    What Our <span class="text-[var(--accent-color)]">Swimmers Say</span>
+                </h2>
+                <div class="w-16 h-1 bg-[var(--accent-color)] mx-auto mb-6"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Testimonial 1 -->
+                <div class="bg-[var(--bg-card)] border border-[var(--border-light)] p-8 rounded-3xl relative shadow-lg">
+                    <i class="fas fa-quote-right text-5xl text-[var(--accent-color)]/10 absolute top-8 right-8"></i>
+                    <div class="flex text-[#FFD700] text-sm mb-6 gap-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-base italic leading-relaxed mb-8">
+                        "The coaching staff here completely transformed my freestyle technique. Within 3 months, I dropped my 100m time by 5 seconds. The facilities are always pristine."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[var(--border-light)] overflow-hidden">
+                            <img src="https://i.pravatar.cc/150?img=33" alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h5 class="text-[var(--text-main)] font-bold text-sm uppercase tracking-wide">James H.</h5>
+                            <span class="text-[var(--accent-color)] text-xs">Elite Squad Swimmer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-[var(--bg-card)] border border-[var(--border-light)] p-8 rounded-3xl relative shadow-lg transform md:-translate-y-4">
+                    <i class="fas fa-quote-right text-5xl text-[var(--accent-color)]/10 absolute top-8 right-8"></i>
+                    <div class="flex text-[#FFD700] text-sm mb-6 gap-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-base italic leading-relaxed mb-8">
+                        "My kids love the Little Fins program! The coaches are so patient and make learning water safety fun. The viewing deck is perfect for parents."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[var(--border-light)] overflow-hidden">
+                            <img src="https://i.pravatar.cc/150?img=47" alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h5 class="text-[var(--text-main)] font-bold text-sm uppercase tracking-wide">Sarah M.</h5>
+                            <span class="text-[var(--accent-color)] text-xs">Parent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-[var(--bg-card)] border border-[var(--border-light)] p-8 rounded-3xl relative shadow-lg">
+                    <i class="fas fa-quote-right text-5xl text-[var(--accent-color)]/10 absolute top-8 right-8"></i>
+                    <div class="flex text-[#FFD700] text-sm mb-6 gap-1">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-base italic leading-relaxed mb-8">
+                        "As a triathlete, I need high-quality pool time. The heated therapy pool and the strict lane management in the 50m pool are exactly what I need for training."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[var(--border-light)] overflow-hidden">
+                            <img src="https://i.pravatar.cc/150?img=11" alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h5 class="text-[var(--text-main)] font-bold text-sm uppercase tracking-wide">David P.</h5>
+                            <span class="text-[var(--accent-color)] text-xs">Triathlete</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CONTACT CTA                                  -->
+    <!-- ============================================ -->
+    <section id="contact" class="w-full py-24 bg-[var(--bg-color)] border-b border-[var(--border-light)]">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 text-center">
+            <div class="max-w-3xl mx-auto">
+                <span class="text-[var(--accent-color)] text-xs font-bold uppercase tracking-[0.3em]">Get Started</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mt-4 mb-6">Ready to <span class="text-[var(--accent-color)]">Dive In?</span></h2>
+                <p class="text-[var(--text-muted)] text-lg mb-10">Join AquaPulse today and experience the best aquatic training in the region.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#" class="btn btn-solid px-12 py-4 text-base">Free Trial Session</a>
+                    <a href="#" class="btn btn-outline px-12 py-4 text-base">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER                                       -->
+    <!-- ============================================ -->
+   <footer class="footer-advanced">
+        <!-- Background Decorations -->
+        <div class="bg-orb bg-orb--1"></div>
+        <div class="bg-orb bg-orb--2"></div>
+        <div class="bg-orb bg-orb--3"></div>
+        
+       
+        
+        <div class="footer-inner">
+            <!-- Main Footer Grid -->
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div class="brand-col">
+                    <!-- FIXED LOGO - Added font-size: inherit to the span -->
+                    <a href="index.html" class="brand-link mb-6 inline-flex hover:scale-105 transition-transform duration-200" style="text-decoration: none;">
+                        <div class="brand-icon-wrapper">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="text-2xl brand-logo tracking-widest uppercase block" style="color: var(--text-main) !important;">
+                            <span style="color: var(--accent-color); font-size: inherit;">Aqua</span>Pulse
+                        </div>
+                    </a>
+                    
+                    <p class="brand-desc">
+                        Premium swimming academy with certified coaches, modern pools, and programs for all ages. Dive into excellence today.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Programs -->
+                <div class="link-col">
+                    <h4>Programs</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Little Fins</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Stroke Foundation</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Junior Competitive</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Elite Squad</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Adult Masters</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="link-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Coaches</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div class="link-col">
+                    <h4>Contact</h4>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                        <span class="text-block">45 Aqua Drive<br>Miami, FL 33101</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-phone"></i></div>
+                        <a href="tel:+12125550198">+1 305 555 0198</a>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+                        <a href="mailto:info@aquapulse.com">info@aquapulse.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-circle"><i class="fas fa-clock"></i></div>
+                        <span>Mon-Sat: 6:00 AM - 8:00 PM</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2026 <span>Aqua</span>Pulse. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Refund Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+            
+            <!-- Back to Top -->
+            <div style="text-align: center; margin-top: 1.8rem;">
+                <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; transition: color 0.2s;">
+                    <span>Back to Top</span>
+                    <i class="fas fa-arrow-up" style="font-size: 0.65rem; transition: transform 0.2s;"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Reset & Base (only for footer context) */
+        .footer-advanced * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .footer-advanced {
+            --bg-primary: #0b1a2f;
+            --border-light: rgba(56, 132, 255, 0.25);
+            --accent-color: #3b8cff;
+            --accent-glow: rgba(59, 140, 255, 0.3);
+            --text-main: #eaf0ff;
+            --text-muted: #a0bbdd;
+            --text-dim: #6c8ab0;
+            
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-light);
+            padding: 3rem 0 1.5rem;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            width: 100%;
+        }
+        
+        .footer-advanced .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            opacity: 0.35;
+        }
+        .footer-advanced .bg-orb--1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #1f4d8a, transparent 70%);
+            top: -200px;
+            right: -100px;
+        }
+        .footer-advanced .bg-orb--2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #1a3f75, transparent 70%);
+            bottom: -150px;
+            left: -80px;
+        }
+        .footer-advanced .bg-orb--3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #0f2d55, transparent 70%);
+            top: 40%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+        }
+        .footer-advanced .wave-deco {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            opacity: 0.08;
+            pointer-events: none;
+            transform: rotate(180deg);
+        }
+        .footer-advanced .wave-deco svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .footer-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+            gap: 2.5rem 1.8rem;
+            margin-bottom: 2.2rem;
+        }
+        
+        .brand-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .brand-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1rem;
+            max-width: 28rem;
+            margin-bottom: 1.8rem;
+            font-weight: 400;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(59, 140, 255, 0.08);
+            border: 2px solid rgba(59, 140, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+        .social-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 140, 255, 0.35);
+        }
+        
+        .link-col h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.65rem;
+        }
+        .link-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 2.2rem;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 4px;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+        
+        .link-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .link-col ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.98rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+        .link-col ul li a i {
+            font-size: 0.6rem;
+            color: var(--accent-color);
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s ease;
+        }
+        .link-col ul li a:hover {
+            color: var(--accent-color);
+        }
+        .link-col ul li a:hover i {
+            opacity: 1;
+            transform: translateX(0px);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.98rem;
+            transition: all 0.2s ease;
+            margin-bottom: 0.2rem;
+        }
+        .contact-item .icon-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(59, 140, 255, 0.08);
+            border: 2px solid rgba(59, 140, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+        .contact-item:hover .icon-circle {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+        .contact-item a, .contact-item span {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .contact-item a:hover {
+            color: var(--accent-color);
+        }
+        .contact-item .text-block {
+            line-height: 1.5;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.8rem;
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem 2rem;
+        }
+        .footer-bottom p {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--text-dim);
+        }
+        .footer-bottom p span {
+            color: var(--accent-color);
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem 2.2rem;
+        }
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.25s ease;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Back to top hover */
+        .footer-inner > div:last-child a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            transition: color 0.2s;
+        }
+        .footer-inner > div:last-child a:hover {
+            color: var(--accent-color);
+        }
+        .footer-inner > div:last-child a:hover i {
+            transform: translateY(-4px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+            .brand-col {
+                grid-column: 1 / -1;
+            }
+            .brand-desc {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 600px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+                gap: 1rem 1.5rem;
+            }
+            .footer-inner {
+                padding: 0 1.2rem;
+            }
+        }
+    </style>
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT — FIXED THEME TOGGLE              -->
+    <!-- ============================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- Navbar scroll ----
+            const nav = document.getElementById('main-nav');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 30) nav.classList.add('scrolled');
+                else nav.classList.remove('scrolled');
+            });
+
+            // ---- Mobile drawer ----
+            const mobileBtn = document.getElementById('mobile-btn');
+            const fullscreenMenu = document.getElementById('fullscreen-menu');
+            const closeMenu = document.getElementById('close-menu');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+
+            function toggleDrawer() {
+                fullscreenMenu.classList.toggle('active');
+                drawerOverlay.classList.toggle('active');
+                document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : 'auto';
+            }
+
+            if (mobileBtn) mobileBtn.addEventListener('click', toggleDrawer);
+            if (closeMenu) closeMenu.addEventListener('click', toggleDrawer);
+            if (drawerOverlay) drawerOverlay.addEventListener('click', toggleDrawer);
+
+            // ---- THEME TOGGLE - FIXED ----
+            const themeDesktop = document.getElementById('theme-toggle-desktop');
+            const themeMobile = document.getElementById('theme-toggle-mobile');
+            const iconDesktop = document.getElementById('theme-icon-desktop');
+            const iconMobile = document.getElementById('theme-icon-mobile');
+
+            // Read saved theme or system preference
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialIsDark = savedTheme ? savedTheme === 'dark' : systemPrefersDark;
+
+            /**
+             * Set theme: 
+             *   isDarkMode = true  → dark mode (remove .light-mode)
+             *   isDarkMode = false → light mode (add .light-mode)
+             */
+            function setTheme(isDarkMode) {
+                if (isDarkMode) {
+                    document.body.classList.remove('light-mode');
+                    if (iconDesktop) iconDesktop.className = 'fas fa-moon';
+                    if (iconMobile) iconMobile.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.add('light-mode');
+                    if (iconDesktop) iconDesktop.className = 'fas fa-sun';
+                    if (iconMobile) iconMobile.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            // Initialize with correct theme
+            setTheme(initialIsDark);
+
+            /**
+             * Toggle theme:
+             *   If .light-mode is present → currently light → go dark → setTheme(true)
+             *   If .light-mode is absent  → currently dark → go light → setTheme(false)
+             * 
+             * FIX: removed the ! (not) operator which was causing the toggle to
+             * always set the same state instead of toggling.
+             */
+            function toggleTheme() {
+                const isLightMode = document.body.classList.contains('light-mode');
+                // If light mode → go dark (true), if dark mode → go light (false)
+                setTheme(isLightMode);
+            }
+
+            if (themeDesktop) themeDesktop.addEventListener('click', toggleTheme);
+            if (themeMobile) themeMobile.addEventListener('click', toggleTheme);
+
+            // ---- RTL toggle ----
+            const rtlBtn = document.getElementById('rtl-btn');
+            const rtlMobile = document.getElementById('rtl-toggle-mobile');
+            const rtlTexts = document.querySelectorAll('.rtl-text');
+
+            function toggleRTL() {
+                const html = document.documentElement;
+                if (html.dir === 'rtl') {
+                    html.dir = 'ltr';
+                    rtlTexts.forEach(function(el) { el.textContent = 'LTR'; });
+                    if (rtlBtn) rtlBtn.textContent = 'LTR';
+                } else {
+                    html.dir = 'rtl';
+                    rtlTexts.forEach(function(el) { el.textContent = 'RTL'; });
+                    if (rtlBtn) rtlBtn.textContent = 'RTL';
+                }
+            }
+
+            if (rtlBtn) rtlBtn.addEventListener('click', toggleRTL);
+            if (rtlMobile) rtlMobile.addEventListener('click', toggleRTL);
+
+            // ---- Close mobile on resize to desktop ----
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 1280) {
+                    if (fullscreenMenu) fullscreenMenu.classList.remove('active');
+                    if (drawerOverlay) drawerOverlay.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // ---- Mobile dropdown (Home expand) ----
+            const homeToggle = document.getElementById('mobile-home-toggle');
+            const homeItems = document.getElementById('mobile-home-items');
+            if (homeToggle && homeItems) {
+                homeToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('open');
+                    homeItems.classList.toggle('open');
+                });
+            }
+
+            // ---- Smooth anchor scroll ----
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    var href = this.getAttribute('href');
+                    if (href === '#') return;
+                    e.preventDefault();
+                    var target = document.querySelector(href);
+                    if (target) {
+                        var offset = 80;
+                        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                        window.scrollTo({ top: top, behavior: 'smooth' });
+                    }
+                });
+            });
+
+        })();
+    </script>
+</body>
+</html>
