@@ -22,6 +22,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;600&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
+
+        /* === TYPOGRAPHY STANDARDIZATION === */
+        h1, h2, h3, h4, h5, h6, .brand-logo {
+            font-weight: 600 !important;
+        }
+        
+        p {
+            font-weight: 400 !important;
+        }
+        
+        b, strong, .font-bold {
+            font-weight: 600 !important;
+        }
+        
+        .font-extrabold {
+            font-weight: 700 !important;
+        }
+        
+        .text-muted {
+            font-weight: 400;
+        }
+
         /* === RESET & CORE === */
         * {
             margin: 0;
@@ -1421,7 +1443,7 @@
         transition: color 0.4s ease;
     }
     .contact-hero .hero-content .highlight {
-        color: var(--hero-highlight, #38bdf8);
+        color: var(--accent-color);
         transition: color 0.4s ease;
     }
 
@@ -1443,46 +1465,6 @@
         flex-wrap: wrap;
         justify-content: center;
         margin-top: 35px;
-    }
-
-    .contact-hero .hero-cta .btn {
-        padding: 14px 34px;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: all 0.35s ease;
-        text-transform: none;
-        letter-spacing: 0.02em;
-        cursor: pointer;
-        border: 2px solid transparent;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-    }
-
-    .contact-hero .hero-cta .btn-solid {
-        background: var(--hero-btn-solid-bg, #00c6ff);
-        color: var(--hero-btn-solid-color, #ffffff) !important;
-        border-color: var(--hero-btn-solid-bg, #00c6ff);
-    }
-    .contact-hero .hero-cta .btn-solid:hover {
-        background: var(--hero-btn-solid-hover, #009ad6);
-        border-color: var(--hero-btn-solid-hover, #009ad6);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(0, 198, 255, 0.3);
-    }
-
-    .contact-hero .hero-cta .btn-outline {
-        background: transparent;
-        border-color: var(--hero-btn-outline-border, rgba(255, 255, 255, 0.35));
-        color: var(--hero-btn-outline-color, #ffffff) !important;
-    }
-    .contact-hero .hero-cta .btn-outline:hover {
-        background: var(--hero-btn-outline-hover-bg, #ffffff);
-        color: var(--hero-btn-outline-hover-color, #111111) !important;
-        border-color: var(--hero-btn-outline-hover-bg, #ffffff);
-        transform: translateY(-3px);
     }
 
     /* ---------- Responsive ---------- */

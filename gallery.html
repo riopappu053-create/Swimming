@@ -22,6 +22,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;600&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
+
+        /* === TYPOGRAPHY STANDARDIZATION === */
+        h1, h2, h3, h4, h5, h6, .brand-logo {
+            font-weight: 600 !important;
+        }
+        
+        p {
+            font-weight: 400 !important;
+        }
+        
+        b, strong, .font-bold {
+            font-weight: 600 !important;
+        }
+        
+        .font-extrabold {
+            font-weight: 700 !important;
+        }
+        
+        .text-muted {
+            font-weight: 400;
+        }
+
         /* === RESET & CORE === */
         * {
             margin: 0;
@@ -675,7 +697,7 @@
         .gallery-item .overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+            background: linear-gradient(to top, rgba(10, 14, 26, 0.95) 0%, rgba(10, 14, 26, 0.6) 40%, transparent 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
             display: flex;
@@ -692,17 +714,20 @@
             font-family: 'Oswald', sans-serif;
             text-transform: uppercase;
             font-weight: 600;
-            font-size: 1rem;
-            color: #fff;
+            font-size: 1.25rem;
+            color: #ffffff;
             letter-spacing: 0.04em;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+            margin-top: 0.25rem;
         }
 
         .gallery-item .overlay .category {
-            font-size: 0.65rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             color: var(--accent-color);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
 
         .gallery-item .overlay .icon {
