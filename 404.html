@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 · AquaPulse</title>
+    <link rel="icon" type="image/jpeg" href="/homepic/logo.png" />
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+
+        /* === TYPOGRAPHY STANDARDIZATION === */
+        h1, h2, h3, h4, h5, h6, .brand-logo {
+            font-weight: 600 !important;
+        }
+        
+        p {
+            font-weight: 400 !important;
+        }
+        
+        b, strong, .font-bold {
+            font-weight: 600 !important;
+        }
+        
+        .font-extrabold {
+            font-weight: 700 !important;
+        }
+        
+        .text-muted {
+            font-weight: 400;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0e1a;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* ---- card ---- */
+        .error-card {
+            max-width: 520px;
+            width: 100%;
+            background: rgba(20, 27, 43, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(74, 123, 199, 0.2);
+            border-radius: 32px;
+            padding: 40px 36px 36px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(74, 123, 199, 0.06) inset;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .error-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 32px;
+            padding: 2px;
+            background: conic-gradient(from 120deg at 50% 50%, rgba(74, 123, 199, 0.15), rgba(74, 123, 199, 0.01), rgba(74, 123, 199, 0.15));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* glow orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        .orb--1 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #4a7bc7, transparent 70%);
+            top: -80px;
+            right: -60px;
+        }
+        .orb--2 {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #2a5fa8, transparent 70%);
+            bottom: -60px;
+            left: -50px;
+        }
+
+        /* 404 number */
+        .error-number {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(5rem, 20vw, 8rem);
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(135deg, #4a7bc7, #8ab3ff, #4a7bc7);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            letter-spacing: 0.04em;
+            position: relative;
+            display: inline-block;
+        }
+        .error-number::after {
+            content: '404';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(74, 123, 199, 0.12) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transform: translate(3px, 3px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        @keyframes shimmer {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* icon ring */
+        .icon-ring {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(74, 123, 199, 0.08);
+            border: 2px solid rgba(74, 123, 199, 0.15);
+            font-size: 2rem;
+            color: #4a7bc7;
+            margin-bottom: 8px;
+            transition: all 0.4s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 4px;
+            color: #fff;
+        }
+        .title span {
+            color: #4a7bc7;
+        }
+
+        .desc {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 6px;
+            max-width: 360px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: #4a7bc7;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(74, 123, 199, 0.3);
+        }
+        .btn-primary:hover {
+            background: #3a6bb7;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(74, 123, 199, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(74, 123, 199, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            font-size: 0.75rem;
+        }
+
+        /* search */
+        .search-wrap {
+            margin-top: 22px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 3px 3px 3px 18px;
+            transition: all 0.3s ease;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .search-wrap:focus-within {
+            border-color: rgba(74, 123, 199, 0.4);
+            box-shadow: 0 0 0 4px rgba(74, 123, 199, 0.08);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .search-wrap input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 0.85rem;
+            flex: 1;
+            padding: 10px 0;
+            font-family: 'Inter', sans-serif;
+            min-width: 0;
+        }
+        .search-wrap input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .search-wrap button {
+            background: #4a7bc7;
+            border: none;
+            color: #fff;
+            border-radius: 60px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+        .search-wrap button:hover {
+            background: #3a6bb7;
+            transform: scale(1.02);
+        }
+
+        /* small links */
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 14px;
+            margin-top: 18px;
+        }
+        .quick-links a {
+            color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .quick-links a i {
+            font-size: 0.55rem;
+            color: #4a7bc7;
+        }
+        .quick-links a:hover {
+            color: #4a7bc7;
+        }
+
+        .footer-note {
+            margin-top: 22px;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .footer-note i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 30px 20px 26px;
+                border-radius: 24px;
+            }
+            .icon-ring {
+                width: 60px;
+                height: 60px;
+                font-size: 1.6rem;
+            }
+            .title {
+                font-size: 1.3rem;
+            }
+            .desc {
+                font-size: 0.85rem;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.7rem;
+            }
+            .search-wrap {
+                padding-left: 14px;
+            }
+            .search-wrap input {
+                font-size: 0.8rem;
+                padding: 8px 0;
+            }
+            .search-wrap button {
+                padding: 8px 16px;
+                font-size: 0.65rem;
+            }
+        }
+
+        /* light mode */
+        body.light {
+            background: #f4f2ed;
+        }
+        body.light .error-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+        body.light .error-card::before {
+            background: conic-gradient(from 120deg at 50% 50%, rgba(26, 109, 245, 0.12), rgba(26, 109, 245, 0.01), rgba(26, 109, 245, 0.12));
+        }
+        body.light .title {
+            color: #1a1a1a;
+        }
+        body.light .desc {
+            color: rgba(0, 0, 0, 0.5);
+        }
+        body.light .btn-secondary {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1a1a1a;
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+        body.light .btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.08);
+        }
+        body.light .search-wrap {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+        body.light .search-wrap input {
+            color: #1a1a1a;
+        }
+        body.light .search-wrap input::placeholder {
+            color: rgba(0, 0, 0, 0.25);
+        }
+        body.light .quick-links a {
+            color: rgba(0, 0, 0, 0.25);
+        }
+        body.light .quick-links a:hover {
+            color: #1a6df5;
+        }
+        body.light .footer-note {
+            color: rgba(0, 0, 0, 0.12);
+        }
+        body.light .orb--1,
+        body.light .orb--2 {
+            opacity: 0.15;
+        }
+        body.light .icon-ring {
+            background: rgba(26, 109, 245, 0.06);
+            border-color: rgba(26, 109, 245, 0.12);
+            color: #1a6df5;
+        }
+        body.light .btn-primary {
+            background: #1a6df5;
+            box-shadow: 0 8px 24px rgba(26, 109, 245, 0.25);
+        }
+        body.light .btn-primary:hover {
+            background: #0f5ad6;
+        }
+        body.light .search-wrap button {
+            background: #1a6df5;
+        }
+        body.light .search-wrap button:hover {
+            background: #0f5ad6;
+        }
+        body.light .error-number {
+            background: linear-gradient(135deg, #1a6df5, #6aa3ff, #1a6df5);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        body.light .error-number::after {
+            background: linear-gradient(135deg, transparent 40%, rgba(26, 109, 245, 0.08) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.light .quick-links a i {
+            color: #1a6df5;
+        }
+
+        /* theme toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+        .theme-toggle:hover {
+            background: rgba(74, 123, 199, 0.15);
+            border-color: rgba(74, 123, 199, 0.3);
+            transform: rotate(20deg);
+        }
+        body.light .theme-toggle {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.06);
+            color: #1a1a1a;
+        }
+        body.light .theme-toggle:hover {
+            background: rgba(26, 109, 245, 0.08);
+            border-color: rgba(26, 109, 245, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
+    <!-- ===== 404 CARD ===== -->
+    <div class="error-card">
+
+        <!-- orbs -->
+        <div class="orb orb--1"></div>
+        <div class="orb orb--2"></div>
+
+        <!-- icon -->
+        <div class="icon-ring">
+            <i class="fas fa-water"></i>
+        </div>
+
+        <!-- 404 -->
+        <div class="error-number">404</div>
+
+        <!-- title -->
+        <h1 class="title">Lost at <span>Sea</span></h1>
+
+        <!-- desc -->
+        <p class="desc">
+            The page you're looking for drifted off the map.
+            Let's navigate you back to shore.
+        </p>
+
+        <!-- buttons -->
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="#" class="btn btn-secondary">
+                <i class="fas fa-life-ring"></i> Help
+            </a>
+        </div>
+
+        <!-- search -->
+        <div class="search-wrap">
+            <input type="text" placeholder="Search AquaPulse..." id="searchInput" />
+            <button id="searchBtn"><i class="fas fa-search"></i> Search</button>
+        </div>
+
+        <!-- quick links -->
+        <div class="quick-links">
+            <a href="#"><i class="fas fa-circle"></i> Programs</a>
+            <a href="#"><i class="fas fa-circle"></i> Schedule</a>
+            <a href="#"><i class="fas fa-circle"></i> Coaches</a>
+            <a href="#"><i class="fas fa-circle"></i> Gallery</a>
+        </div>
+
+        <div class="footer-note">
+            <i class="fas fa-code"></i> 404 · page not found
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- theme ----
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const saved = localStorage.getItem('theme-404');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = saved ? saved === 'dark' : prefersDark;
+
+            function applyTheme(dark) {
+                document.body.classList.toggle('light', !dark);
+                themeIcon.className = dark ? 'fas fa-moon' : 'fas fa-sun';
+                localStorage.setItem('theme-404', dark ? 'dark' : 'light');
+            }
+            applyTheme(isDark);
+
+            themeToggle.addEventListener('click', function() {
+                const nowDark = document.body.classList.contains('light');
+                applyTheme(nowDark);
+            });
+
+            // ---- search ----
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+
+            function doSearch() {
+                const q = searchInput.value.trim();
+                if (q) {
+                    alert('🔍 Searching for "' + q + '" … (demo)');
+                } else {
+                    alert('Please enter a search term.');
+                }
+            }
+
+            searchBtn.addEventListener('click', doSearch);
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') doSearch();
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
